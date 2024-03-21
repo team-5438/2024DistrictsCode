@@ -81,6 +81,13 @@ public final class Constants {
         public static final String camera0 = "Camera_Module_v1";
     }
 
+    public static final class LEDs {
+        public static final int[] redDefault = { 255, 0, 0 };
+        public static final int[] blueDefault = { 0, 0, 255 };
+
+        public static final int[] ledDefault = Robot.isRedAlliance ? redDefault : blueDefault;
+    }
+
     /* april tags dependant on alliance */
     public static final class AprilTags {
         /* source */

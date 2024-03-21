@@ -9,7 +9,7 @@ public class RevShooterWheels extends Command {
     private SpeakerSubsystem speakerSubsystem;
     private double speed;
 
-    public AmpShootCommand(AmpSubsystem ampSubsystem, SpeakerSubsystem speakerSubsystem, double speed) {
+    public RevShooterWheels(AmpSubsystem ampSubsystem, SpeakerSubsystem speakerSubsystem, double speed) {
         this.ampSubsystem = ampSubsystem;
         this.speakerSubsystem = speakerSubsystem;
         this.speed = speed;
