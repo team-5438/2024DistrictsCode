@@ -1,5 +1,6 @@
 package frc.robot;
 
+import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,6 +48,10 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+
+        /* constantly update robot pose using pose estimation */
+        EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose().get();
+        m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
     }
 
     /* This function is called once each time the robot enters Disabled mode. */
