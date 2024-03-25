@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 5.0
+      "x": 2,
+      "y": 2
     },
     "rotation": 0
   },
@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Test Auto 1"
+            "pathName": "A1-A2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A2-A1"
           }
         }
       ]

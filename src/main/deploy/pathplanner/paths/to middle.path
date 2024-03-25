@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.0,
-        "y": 7.0
+        "x": 1.92,
+        "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.799121883958054,
-        "y": 7.857469429224573
+        "x": 2.9200000000000004,
+        "y": 5.52
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 5.0
+        "x": 7.288106207732949,
+        "y": 4.11382718436913
       },
       "prevControl": {
-        "x": 3.696505678725644,
-        "y": 2.4774483834681957
+        "x": 6.370208700461796,
+        "y": 3.508014829570169
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 90.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
@@ -43,7 +55,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Test Paths",
+  "folder": "Practice Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

@@ -2,19 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 5.0
+      "x": 0.807749806398614,
+      "y": 4.508523112495726
     },
-    "rotation": 0
+    "rotation": -60.94539590092283
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Test Auto 1"
+            "pathName": "insane path"
           }
         }
       ]
