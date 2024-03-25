@@ -43,6 +43,7 @@ public class SpeakerSubsystem extends SubsystemBase {
         bottomShootMotor.follow(topShootMotor, true);
 
         pivotEncoder = new DutyCycleEncoder(Constants.Shooter.Speaker.pivotEncoderDIOPort);
+        pivotEncoder.setPositionOffset(Constants.Shooter.Speaker.pivotEncoderOffset);
         pivotPID = Constants.Shooter.Speaker.pivotPID;
 
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
