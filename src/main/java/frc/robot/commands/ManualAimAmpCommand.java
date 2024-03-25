@@ -15,6 +15,8 @@ public class ManualAimAmpCommand extends Command {
     public ManualAimAmpCommand(AmpSubsystem ampSubsystem, PS4Controller operator) {
         this.ampSubsystem = ampSubsystem;
         this.operator = operator;
+
+        addRequirements(ampSubsystem);
     }
 
     @Override
