@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.55,
-        "y": 4.3
+        "x": 2.58,
+        "y": 4.23
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.103543522577768,
-        "y": 1.3637021243769063
+        "x": 2.133543522577768,
+        "y": 1.293702124376907
       },
       "isLocked": false,
       "linkedName": null
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "fedorapaths",
+  "folder": null,
   "previewStartingState": {
-    "rotation": -30.0,
+    "rotation": -20.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
