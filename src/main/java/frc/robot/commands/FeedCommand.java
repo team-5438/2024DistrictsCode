@@ -17,7 +17,7 @@ public class FeedCommand extends Command {
     @Override
     public void initialize() {
         speakerSubsystem.feedMotor.set(1);
-        intakeSubsystem.intakeMotor.set(1);
+        intakeSubsystem.intakeMotor.set(0.2);
     }
 
     @Override
