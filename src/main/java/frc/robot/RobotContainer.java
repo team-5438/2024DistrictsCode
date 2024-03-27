@@ -131,8 +131,8 @@ public class RobotContainer {
         new JoystickButton(operator, PS4Controller.Button.kCircle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, -1));
 
         /* bring climbers up and down */
-        new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.5));
-        new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.5));
+        new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.75));
+        new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.75));
     }
 
     private void namedCommands() {
