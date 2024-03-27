@@ -26,7 +26,7 @@ public class IntakeCommand extends Command {
         ledSubsystem.strip0.solidColorRGB(255, 0, 255);
         ledSubsystem.strip0.set();
         speakerSubsystem.feedMotor.set(0.1);
-        intakeSubsystem.intakeMotor.set(0.9);
+        intakeSubsystem.intakeMotor.set(1);
     }
 
     @Override
