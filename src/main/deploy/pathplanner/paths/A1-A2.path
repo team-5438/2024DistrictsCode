@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.75,
-        "y": 5.61
+        "x": 2.85,
+        "y": 5.58
       },
       "prevControl": {
-        "x": 1.977259338968745,
-        "y": 5.817055236082017
+        "x": 1.8458800062388132,
+        "y": 5.886990289958874
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "fedorapaths",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0.0,
     "velocity": 0

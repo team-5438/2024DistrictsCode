@@ -7,12 +7,16 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.Speaker;
 import frc.robot.subsystems.SpeakerSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.utils.*;
 
 public class AutoAimSpeakerCommand extends Command {
     private PhotonSubsystem photonSubsystem;
     private SpeakerSubsystem speakerSubsystem;
+    private LEDSubsystem ledSubsystem;
     private PhotonTrackedTarget tag;
 
     /* speed of speaker pivot as a percentage */
@@ -25,9 +29,10 @@ public class AutoAimSpeakerCommand extends Command {
     private double[] distanceLookup = { 1.38,  1.57,  1.83,  2.04,  2.29,  2.55,  2.84,  3.09, 3.35,  3.58,  3.8,   4.1, 4.4, 4.7, 4.94, 5.28 };
     private double[] encoderLookup =  { 0.146, 0.143, 0.133, 0.121, 0.112, 0.104, 0.094, 0.09, 0.084, 0.081, 0.078, 0.075, 0.071, 0.064, 0.058, 0.057 };
 
-    public AutoAimSpeakerCommand(SpeakerSubsystem speakerSubsystem, PhotonSubsystem photonSubsystem) {
+    public AutoAimSpeakerCommand(SpeakerSubsystem speakerSubsystem, PhotonSubsystem photonSubsystem, LEDSubsystem ledSubsystem) {
         this.speakerSubsystem = speakerSubsystem;
         this.photonSubsystem = photonSubsystem;
+        this.ledSubsystem = ledSubsystem;        
         
         /* override default aiming */
         addRequirements(speakerSubsystem);
@@ -98,9 +103,21 @@ public class AutoAimSpeakerCommand extends Command {
         if (speakerSubsystem.hasNote) {
             /* if so we need to spin up our shooting wheels */
             speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
+
+            /* check if shooter wheels are revved and robot is aligned with speaker */
+            if (speakerSubsystem.isRevved && photonSubsystem.isAligned){
+                /* if so, all 4 conditions are fulfilled and LEDs are green */
+                ledSubsystem.strip0.solidColorRGB(0, 255, 0);
+                ledSubsystem.strip0.set();
+            } else {
+                /* otherwise, LEDs are orange */
+                ledSubsystem.strip0.solidColorRGB(255, 165, 0);
+                ledSubsystem.strip0.set();
+            }
         } else {
             /* otherwise lets slow them down to a low speed */
             speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+            ledSubsystem.strip0.setDefaultLED();
         }
     }
 

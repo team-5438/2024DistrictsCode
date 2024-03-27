@@ -26,6 +26,7 @@ import frc.robot.commands.RevShooterWheelsCommand;
 import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
 import frc.robot.subsystems.SpeakerSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -44,6 +45,7 @@ public class RobotContainer {
     public final PhotonSubsystem photonSubsystem;
     public final IntakeSubsystem intakeSubsystem;
     public final ClimberSubsystem climberSubsystem;
+    public final LEDSubsystem ledSubsystem;
 
     public final ManualAimSpeakerCommand manualAimSpeakerCommand;
     public final AutoAimSpeakerCommand autoAimSpeakerCommand;
@@ -64,10 +66,11 @@ public class RobotContainer {
         photonSubsystem = new PhotonSubsystem();
         intakeSubsystem = new IntakeSubsystem();
         climberSubsystem = new ClimberSubsystem();
+        ledSubsystem = new LEDSubsystem();
 
         /* commands */
         manualAimSpeakerCommand = new ManualAimSpeakerCommand(speakerSubsystem, operator);
-        autoAimSpeakerCommand = new AutoAimSpeakerCommand(speakerSubsystem, photonSubsystem);
+        autoAimSpeakerCommand = new AutoAimSpeakerCommand(speakerSubsystem, photonSubsystem, ledSubsystem);
         manualAimAmpCommand = new ManualAimAmpCommand(ampSubsystem, operator);
 
         /* set default commands (NOTE: some of these commands may have binds inside of them) */
@@ -108,7 +111,7 @@ public class RobotContainer {
         /* operator binds */
         /* intake */
         new JoystickButton(operator, PS4Controller.Button.kSquare.value).onTrue(new SequentialCommandGroup(
-            new IntakeCommand(intakeSubsystem, speakerSubsystem).withTimeout(10),
+            new IntakeCommand(intakeSubsystem, speakerSubsystem, ledSubsystem).withTimeout(10),
             new InstantCommand(() -> speakerSubsystem.feedMotor.set(-0.21)),
             new WaitCommand(0.25),
             new InstantCommand(() -> speakerSubsystem.feedMotor.set(0))
