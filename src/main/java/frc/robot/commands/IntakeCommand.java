@@ -22,10 +22,10 @@ public class IntakeCommand extends Command {
 
     @Override
     public void initialize() {
-        speakerSubsystem.feedMotor.set(0.6);
-        intakeSubsystem.intakeMotor.set(1);
-        ledSubsystem.strip0.solidColorRGB(255, 255, 0);
+        ledSubsystem.strip0.solidColorRGB(255, 0, 255);
         ledSubsystem.strip0.set();
+        speakerSubsystem.feedMotor.set(0.1);
+        intakeSubsystem.intakeMotor.set(0.9);
     }
 
     @Override

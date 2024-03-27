@@ -15,6 +15,8 @@ public class ManualAimSpeakerCommand extends Command {
     public ManualAimSpeakerCommand(SpeakerSubsystem speakerSubsystem, PS4Controller operator) {
         this.speakerSubsystem = speakerSubsystem;
         this.operator = operator;
+
+        addRequirements(speakerSubsystem);
     }
 
     @Override

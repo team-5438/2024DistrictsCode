@@ -15,14 +15,16 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.robot.Constants;
 
 public class PhotonSubsystem extends SubsystemBase {
     private PhotonCamera cam0; // this is private to ensure we don't waste resources grabbing a new image elsewhere
+    private NetworkTable NT;
     public PhotonTrackedTarget bestTarget;
     public PhotonTrackedTarget tag;
 
@@ -41,7 +43,12 @@ public class PhotonSubsystem extends SubsystemBase {
     public ShuffleboardTab tab;
 
     public PhotonSubsystem() {
-        cam0 = new PhotonCamera(Constants.Vision.camera0);
+        NT = NetworkTableInstance.getDefault().getTable("photonvision");
+        if (NT.containsKey(Constants.Vision.camera0)) {
+            cam0 = new PhotonCamera(Constants.Vision.camera0);
+        } else {
+            cam0 = null;
+        }
         tag = getTag(Constants.AprilTags.speakerCentral);
         isAligned = false;
 
@@ -78,6 +85,9 @@ public class PhotonSubsystem extends SubsystemBase {
      * @return Optional<EstimatedRobotPose>
      */
     public Optional<EstimatedRobotPose> getEstimatedPose() {
+        if (cam0 == null || cameraImage == null) {
+            return null;
+        }
         if (cam0 == null || !cam0.isConnected()
             || cameraImage.getTargets().size() < 2) {
             return Optional.empty();
@@ -92,6 +102,9 @@ public class PhotonSubsystem extends SubsystemBase {
      * @return PhotonTrackedTarget of the requested target or null if not found
      */
     public PhotonTrackedTarget getTag(long tagID) {
+        if (cam0 == null || cameraImage == null) {
+            return null;
+        }
         for (PhotonTrackedTarget target : cameraImage.getTargets()) {
             if (target.getFiducialId() == tagID) {
                 return target;
@@ -102,6 +115,9 @@ public class PhotonSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if (cam0 == null) {
+            return;
+        }
         cameraImage = cam0.getLatestResult();
 
         if (cameraImage.hasTargets()) {

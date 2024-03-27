@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 5.0
+        "x": 1.290597959227301,
+        "y": 5.550936522700434
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1541057367829026,
-        "y": 6.479480387532203
+        "x": 1.689982100509466,
+        "y": 5.5731245305494435
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.57291628868972,
-        "y": 4.089988751406074
+        "x": 3.37786282675784,
+        "y": 5.550936522700434
       },
       "prevControl": {
-        "x": 4.106970499655286,
-        "y": 2.3601727203454415
+        "x": 2.978909931822092,
+        "y": 5.55911750660057
+      },
+      "nextControl": {
+        "x": 3.7768157216935876,
+        "y": 5.542755538800298
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.1019852916509385,
+        "y": 5.550936522700434
+      },
+      "prevControl": {
+        "x": 2.0022067758652775,
+        "y": 5.544284621648058
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +48,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.15,
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "parallel",
         "data": {
@@ -49,33 +65,16 @@
       }
     },
     {
-      "name": "Shoot",
-      "waypointRelativePos": 0.85,
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.85,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
                 "name": "Shoot"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Print",
-      "waypointRelativePos": 0.05,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Example"
               }
             }
           ]
@@ -91,11 +90,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0.47185015197380087,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Test Paths",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 0.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

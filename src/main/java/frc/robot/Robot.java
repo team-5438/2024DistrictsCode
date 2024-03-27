@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.Optional;
+
 import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -51,8 +53,12 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
 
         /* constantly update robot pose using pose estimation */
-        EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose().get();
-        m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
+        Optional<EstimatedRobotPose> pose = m_robotContainer.photonSubsystem.getEstimatedPose();
+        if (pose != null) {
+            m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
+                pose.get().estimatedPose.toPose2d(),
+                pose.get().timestampSeconds);
+        }
     }
 
     /* This function is called once each time the robot enters Disabled mode. */

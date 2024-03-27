@@ -58,7 +58,7 @@ public final class Constants {
             public static final int pivotID = 15;
             public static final PIDController pivotPID = new PIDController(3.0, 0.0, 0.0);
             public static final int pivotEncoderDIOPort = 3;
-            public static final double pivotEncoderOffset = 0.0;
+            public static final double pivotEncoderOffset = 0.505;
             public static final double maxPivotSpeed = 0.2;
 
             public static final int topShootID = 8;

@@ -78,6 +78,9 @@ public class RobotContainer {
 
         // The robot's bindings are defined here...
         configureBindings();
+
+        // robots named commands
+        namedCommands();
     }
 
     private void configureBindings() {
@@ -129,6 +132,11 @@ public class RobotContainer {
         /* bring climbers up and down */
         new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.5));
         new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.5));
+    }
+
+    private void namedCommands() {
+        NamedCommands.registerCommand("Shoot", new FeedCommand(speakerSubsystem, intakeSubsystem).withTimeout(1));
+        NamedCommands.registerCommand("Align with Speaker", new AlignWithSpeakerCommand(photonSubsystem, swerveSubsystem));
     }
 
     public Command getAutonomousCommand() {
