@@ -24,6 +24,9 @@ import frc.robot.Constants;
 public class PhotonSubsystem extends SubsystemBase {
     private PhotonCamera cam0; // this is private to ensure we don't waste resources grabbing a new image elsewhere
     public PhotonTrackedTarget bestTarget;
+    public PhotonTrackedTarget tag;
+
+    public boolean isAligned;
 
     public PhotonPipelineResult cameraImage;
     public double distanceToOptimalTag;
@@ -39,6 +42,8 @@ public class PhotonSubsystem extends SubsystemBase {
 
     public PhotonSubsystem() {
         cam0 = new PhotonCamera(Constants.Vision.camera0);
+        tag = getTag(Constants.AprilTags.speakerCentral);
+        isAligned = false;
 
         /* pose estimation using photon vision */
         try {
@@ -103,6 +108,11 @@ public class PhotonSubsystem extends SubsystemBase {
             bestTarget = cameraImage.getBestTarget();
             distanceToOptimalTag = bestTarget.getBestCameraToTarget().getX();
             optimalTagID = bestTarget.getFiducialId();
+        }
+        if (tag.getYaw() < Constants.Vision.alignedTolerance) {
+            isAligned = true;
+        } else {
+            isAligned = false;
         }
     }
 }

@@ -3,6 +3,9 @@ package frc.robot.utils;
 import java.util.ArrayList;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import frc.robot.Constants;
+import frc.robot.Constants.LEDs;
+import frc.robot.subsystems.LEDSubsystem;
 
 public class LEDStrip {
     public AddressableLED led;
@@ -47,9 +50,14 @@ public class LEDStrip {
      * @param b green
      * @param g blue
      */
-    public void solidColorRGB(int r, int b, int g) {
+    public void solidColorRGB(int r, int g, int b) {
         for (int i = 0; i < ledBuffer.getLength(); i++) {
             ledBuffer.setRGB(i, r, g, b);
         }
+    }
+
+    public void setDefaultLED() {
+        solidColorRGB(Constants.LEDs.ledDefault[0], Constants.LEDs.ledDefault[1], Constants.LEDs.ledDefault[2]);
+        set();
     }
 }

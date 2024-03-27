@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
@@ -34,6 +35,11 @@ public class SpeakerSubsystem extends SubsystemBase {
 
     public ColorSensorV3 colorSensor;
 
+    public boolean isRevved = false;
+    public double desiredVelocity;
+    public RelativeEncoder topEncoder;
+    public RelativeEncoder bottomEncoder;
+
     public SpeakerSubsystem() {
         pivotMotor = new CANSparkMax(Constants.Shooter.Speaker.pivotID, MotorType.kBrushless);
         feedMotor = new CANSparkMax(Constants.Shooter.Speaker.feedMotorID, MotorType.kBrushless);
@@ -44,6 +50,9 @@ public class SpeakerSubsystem extends SubsystemBase {
 
         pivotEncoder = new DutyCycleEncoder(Constants.Shooter.Speaker.pivotEncoderDIOPort);
         pivotPID = Constants.Shooter.Speaker.pivotPID;
+
+        topEncoder = topShootMotor.getEncoder();
+        bottomEncoder = bottomShootMotor.getEncoder();
 
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
@@ -67,5 +76,12 @@ public class SpeakerSubsystem extends SubsystemBase {
         /* add data to shuffleboard here */
         pivotEncoderShuffleBoard.setDouble(pivotEncoderDistance);
         noteProximityShuffleBoard.setDouble(colorSensor.getProximity());
+
+        if (topEncoder.getVelocity() > desiredVelocity && bottomEncoder.getVelocity() > desiredVelocity) {
+            isRevved = true;
+        }
+        else {
+            isRevved = false;
+        }
     }
 }

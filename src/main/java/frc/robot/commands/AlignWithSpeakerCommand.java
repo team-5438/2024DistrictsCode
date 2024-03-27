@@ -15,8 +15,8 @@ public class AlignWithSpeakerCommand extends Command {
     private PIDController rotationPID;
     private PhotonTrackedTarget tag;
 
-	private double alignedTolerance;
     private double rotSpeed;
+
 
     public AlignWithSpeakerCommand(PhotonSubsystem photonSubsystem, SwerveSubsystem swerveSubsystem) {
         this.photonSubsystem = photonSubsystem;
@@ -30,10 +30,11 @@ public class AlignWithSpeakerCommand extends Command {
         rotationPID = new PIDController(0.3, 0.0, 0.0);
 
         /* setup some tolerance to allow us to aim "faster" */
-		alignedTolerance = 7.5;
 
         /* get the tag we want to aim at */
         tag = photonSubsystem.getTag(Constants.AprilTags.speakerCentral);
+
+        /*we're not aligned just yet, so isAligned is false */
     }
 
     @Override
@@ -48,7 +49,7 @@ public class AlignWithSpeakerCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        if (tag.getYaw() < alignedTolerance || tag == null) {
+        if (tag.getYaw() < Constants.Vision.alignedTolerance || tag == null) {
             return true;
         }
         return false;

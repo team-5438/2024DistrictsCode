@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
             System.out.println("Couldn't start the camera server");
             e.printStackTrace();
         }
+        m_robotContainer.ledSubsystem.strip0.setDefaultLED();
     }
 
     /**
