@@ -106,11 +106,16 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         /* if we can see the right april tag we start auto aiming here */
-        if (m_robotContainer.ampSubsystem.pivotEncoder.getPosition() > 0.2 && m_robotContainer.speakerSubsystem.pivotEncoderDistance < 0.082) {
+        if (m_robotContainer.ampSubsystem.pivotEncoder.getPosition() > 0.2) {
             m_robotContainer.speakerSubsystem.pivotMotor.set(m_robotContainer.speakerSubsystem.pivotPID.calculate(m_robotContainer.speakerSubsystem.pivotEncoderDistance, 0.082));
         }
         if (m_robotContainer.photonSubsystem.getTag(Constants.AprilTags.speakerCentral) != null) {
             m_robotContainer.autoAimSpeakerCommand.schedule();
+        }
+
+        // FIXME: this really really really shouldn't be here like it will probably break amp shooting badly
+        if (m_robotContainer.speakerSubsystem.hasNote) {
+            m_robotContainer.speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
         }
     }
 
