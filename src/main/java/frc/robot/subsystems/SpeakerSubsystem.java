@@ -36,8 +36,7 @@ public class SpeakerSubsystem extends SubsystemBase {
 
     public ColorSensorV3 colorSensor;
 
-    public boolean isRevved = false;
-    public double desiredVelocity;
+    public boolean isRevved;
     public RelativeEncoder topEncoder;
     public RelativeEncoder bottomEncoder;
 
@@ -81,7 +80,7 @@ public class SpeakerSubsystem extends SubsystemBase {
         pivotEncoderShuffleBoard.setDouble(pivotEncoderDistance);
         noteProximityShuffleBoard.setDouble(colorSensor.getProximity());
 
-        if (topEncoder.getVelocity() > desiredVelocity && bottomEncoder.getVelocity() > desiredVelocity) {
+        if (topEncoder.getVelocity() > Constants.Shooter.Speaker.revvedVelocity && bottomEncoder.getVelocity() > Constants.Shooter.Speaker.revvedVelocity) {
             isRevved = true;
         }
         else {

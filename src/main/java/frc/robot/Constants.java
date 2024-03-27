@@ -64,10 +64,13 @@ public final class Constants {
             public static final int topShootID = 8;
             public static final int bottomShootID = 9;
 
+            public static final double revvedVelocity = 5400; //in RPM, because of course it is
             public static final double shootingSpeed = 0.75;
             public static final double idleSpeed = 0.1;
 
             public static final int feedMotorID = 10;
+
+            public static final double aimedTolerance = 0.01;
         }
 
         public static final class Amp {

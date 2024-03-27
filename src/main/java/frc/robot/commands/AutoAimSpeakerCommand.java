@@ -101,7 +101,7 @@ public class AutoAimSpeakerCommand extends Command {
             speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
 
             /* check if shooter wheels are revved and robot is aligned with speaker */
-            if (speakerSubsystem.isRevved && photonSubsystem.isAligned){
+            if (speakerSubsystem.isRevved && photonSubsystem.isAligned && speakerSubsystem.pivotEncoderDistance <= Constants.Shooter.Speaker.aimedTolerance){
                 /* if so, all 4 conditions are fulfilled and LEDs are green */
                 ledSubsystem.strip0.solidColorRGB(0, 255, 0);
                 ledSubsystem.strip0.set();
@@ -135,5 +135,7 @@ public class AutoAimSpeakerCommand extends Command {
         speakerSubsystem.topShootMotor.set(0);
         /* show that we are no longer auto aiming */
         speakerSubsystem.autoAimingShuffleBoard.setBoolean(false);
+
+        ledSubsystem.strip0.setDefaultLED();
     }
 }
