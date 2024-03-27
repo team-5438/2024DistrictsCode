@@ -41,7 +41,7 @@ public class PhotonSubsystem extends SubsystemBase {
 
     public PhotonSubsystem() {
         NT = NetworkTableInstance.getDefault().getTable("photonvision");
-        if (NT.containsKey(Constants.Vision.camera0)) {
+        if (NT != null) {
             cam0 = new PhotonCamera(Constants.Vision.camera0);
         } else {
             cam0 = null;
@@ -79,15 +79,18 @@ public class PhotonSubsystem extends SubsystemBase {
      *
      * @return Optional<EstimatedRobotPose>
      */
-    public Optional<EstimatedRobotPose> getEstimatedPose() {
+    public EstimatedRobotPose getEstimatedPose() {
         if (cam0 == null || cameraImage == null) {
             return null;
         }
         if (cam0 == null || !cam0.isConnected()
             || cameraImage.getTargets().size() < 2) {
-            return Optional.empty();
+            return null;
         }
-        return poseEstimator.update();
+        // if (poseEstimator.update().isPresent() && poseEstimator.update() != null) {
+        //     return poseEstimator.update().get();
+        // }
+        return null;
     }
 
     /**

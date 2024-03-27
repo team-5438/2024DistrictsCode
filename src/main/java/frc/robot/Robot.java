@@ -52,11 +52,11 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
 
         /* constantly update robot pose using pose estimation */
-        Optional<EstimatedRobotPose> pose = m_robotContainer.photonSubsystem.getEstimatedPose();
+        EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose();
         if (pose != null) {
             m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
-                pose.get().estimatedPose.toPose2d(),
-                pose.get().timestampSeconds);
+                pose.estimatedPose.toPose2d(),
+                pose.timestampSeconds);
         }
     }
 
