@@ -30,7 +30,8 @@ public class SpeakerSubsystem extends SubsystemBase {
     public GenericEntry pivotEncoderShuffleBoard;
     public GenericEntry speakerDistanceShuffleBoard;
     public GenericEntry noteProximityShuffleBoard;
-    public GenericEntry autoAiming;
+    public GenericEntry autoAimingShuffleBoard;
+    public GenericEntry autoAimPivotEncoderShuffleBoard;
 
     public ColorSensorV3 colorSensor;
 
@@ -53,7 +54,8 @@ public class SpeakerSubsystem extends SubsystemBase {
         pivotEncoderShuffleBoard = tab.add("Pivot Encoder", 0.0).getEntry();
         speakerDistanceShuffleBoard = tab.add("Distance to Speaker", 0.0).getEntry();
         noteProximityShuffleBoard = tab.add("Proximity to Note", 0.0).getEntry();
-        autoAiming = tab.add("Auto Aiming", false).getEntry();
+        autoAimingShuffleBoard = tab.add("Auto Aiming", false).getEntry();
+        autoAimPivotEncoderShuffleBoard = tab.add("Auto Aim Pivot Encoder", 0.0).getEntry();
     }
 
     @Override
