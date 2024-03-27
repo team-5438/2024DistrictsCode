@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.Optional;
-
 import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;

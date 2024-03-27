@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.robot.Constants;
-import frc.robot.Constants.LEDs;
-import frc.robot.subsystems.LEDSubsystem;
 
 public class LEDStrip {
     public AddressableLED led;

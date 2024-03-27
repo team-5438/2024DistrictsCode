@@ -1,17 +1,13 @@
 package frc.robot.commands;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants;
-import frc.robot.Constants.Shooter.Speaker;
 import frc.robot.subsystems.SpeakerSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.utils.*;
 
 public class AutoAimSpeakerCommand extends Command {
     private PhotonSubsystem photonSubsystem;
