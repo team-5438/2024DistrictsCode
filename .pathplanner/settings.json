@@ -3,9 +3,21 @@
   "robotLength": 0.74,
   "holonomicMode": true,
   "pathFolders": [
-    "Test Paths"
+    "NOTE-NOTE",
+    "LEGACY",
+    "SPKRLEFT",
+    "SPKRMID",
+    "SPKRRIGHT",
+    "Test Paths",
+    "WALL"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "LEGACY",
+    "SPKRLEFT",
+    "SPKRMID",
+    "SPKRRIGHT",
+    "WALL"
+  ],
   "defaultMaxVel": 5.0,
   "defaultMaxAccel": 2.5,
   "defaultMaxAngVel": 180.0,
