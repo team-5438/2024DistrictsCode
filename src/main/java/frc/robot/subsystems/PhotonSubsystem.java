@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.io.UncheckedIOException;
+import java.util.Optional;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -9,6 +11,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -114,6 +117,26 @@ public class PhotonSubsystem extends SubsystemBase {
             }
         }
         return null;
+    }
+
+    public Pose3d positionToTag(Pose3d currentPose, int tagID) {
+        Optional<Pose3d> tagPose = aprilTagFieldLayout.getTagPose(tagID);
+        
+        if (tagPose == null || tagPose.isEmpty()) { // check if tag is valid
+            return null;
+        }
+
+        Rotation3d robotRotation = currentPose.getRotation();
+        Rotation3d tagRotation = tagPose.get().getRotation();
+
+        double differenceX = currentPose.getX() - tagPose.get().getX();
+        double differenceY = currentPose.getY() - tagPose.get().getY();
+        double differenceZ = currentPose.getZ() - tagPose.get().getZ();
+
+        Rotation3d differenceRotation = robotRotation.minus(tagRotation);
+
+        return new Pose3d(differenceX, differenceY, differenceZ, differenceRotation);
+
     }
 
     @Override
