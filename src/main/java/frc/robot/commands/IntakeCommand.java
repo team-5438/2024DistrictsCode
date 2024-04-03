@@ -11,7 +11,7 @@ public class IntakeCommand extends Command {
     private IntakeSubsystem intakeSubsystem;
     private SpeakerSubsystem speakerSubsystem;
     private LEDSubsystem ledSubsystem;
-    private int[][] greenFlash = {{0,255,0,1000},{0,0,0,1000},{0,255,0,1000},{0,0,0,1000},{0,255,0,1000},{0,0,0,1000}};
+    private int[][] greenFlash = {{0,255,0,100},{0,0,0,100},{0,255,0,100},{0,0,0,100},{0,255,0,100},{0,0,0,100}};
 
     public IntakeCommand(IntakeSubsystem intakeSubsystem, SpeakerSubsystem speakerSubsystem, LEDSubsystem ledSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
@@ -23,16 +23,20 @@ public class IntakeCommand extends Command {
 
     @Override
     public void initialize() {
-        ledSubsystem.strip0.solidColorRGB(255, 0, 255);
+        ledSubsystem.strip0.solidColorRGB(255, 255, 0);
         ledSubsystem.strip0.set();
-        speakerSubsystem.feedMotor.set(0.1);
+        if (speakerSubsystem.pivotEncoderDistance > 0.1) {
+            speakerSubsystem.feedMotor.set(0.3);
+        } else {
+            speakerSubsystem.feedMotor.set(0.4);
+        }
         intakeSubsystem.intakeMotor.set(1);
     }
 
     @Override
     public boolean isFinished() {
         /* end command when we have a note */
-        if(speakerSubsystem.hasNote){
+        if (speakerSubsystem.hasNote) {
             new FlashLEDS(ledSubsystem.strip0, greenFlash);
         } 
         
@@ -41,8 +45,8 @@ public class IntakeCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intakeSubsystem.intakeMotor.set(0);
         speakerSubsystem.feedMotor.set(0);
+        intakeSubsystem.intakeMotor.set(0);
 
         ledSubsystem.strip0.setDefaultLED();
     }

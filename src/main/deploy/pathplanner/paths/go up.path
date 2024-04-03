@@ -16,15 +16,15 @@
     },
     {
       "anchor": {
-        "x": 3.211175152735468,
+        "x": 2.695898344721082,
         "y": 5.5182103704939935
       },
       "prevControl": {
-        "x": 2.2111751527354704,
+        "x": 1.6958983447210842,
         "y": 5.5182103704939935
       },
       "nextControl": {
-        "x": 3.3029649034625836,
+        "x": 2.7876880954481975,
         "y": 5.5182103704939935
       },
       "isLocked": false,
@@ -48,8 +48,8 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 90.0
   },
@@ -59,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Practice Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

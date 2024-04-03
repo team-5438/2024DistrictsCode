@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.utils.Controller;
@@ -39,8 +40,9 @@ public final class Constants {
         public static final double maxAcceleration = 2.5; /* in m/s */
 
         public static final class Auto {
-            public static final PIDConstants translationPID = new PIDConstants(5.0, 0.0, 0.0);
+            public static final PIDConstants translationPID = new PIDConstants(10.0, 0.0, 0.0);
             public static final PIDConstants rotationPID = new PIDConstants(0.1, 0.0, 0.0); /* TODO: tune */
+            public static final String autoName = "bow tie";
         }
     }
 
@@ -56,27 +58,29 @@ public final class Constants {
     public static final class Shooter {
         public static final class Speaker {
             public static final int pivotID = 15;
-            public static final PIDController pivotPID = new PIDController(4, 1, 0.0);
+            public static final PIDController pivotPID = new PIDController(8.5, 0, 0.2);
+            public static final ArmFeedforward pivotFeedforward = new ArmFeedforward(0, 0.015, 0);
             public static final int pivotEncoderDIOPort = 3;
-            public static final double pivotEncoderOffset = 0.505;
+            public static final double pivotEncoderOffset = 0.501;
             public static final double maxPivotSpeed = 0.2;
+            public static final int proximitySensorDIOPort = 8;
 
             public static final int topShootID = 8;
             public static final int bottomShootID = 9;
 
-            public static final double revvedVelocity = 5400; //in RPM, because of course it is
+            public static final double revvedVelocity = 1000; //in RPM, because of course it is
             public static final double shootingSpeed = 0.75;
-            public static final double idleSpeed = 0.1;
+            public static final double idleSpeed = 0.2;
 
             public static final int feedMotorID = 10;
 
-            public static final double aimedTolerance = 0.01;
+            public static final double aimedTolerance = 0.008;
         }
 
         public static final class Amp {
             public static final int pivotID = 7;
             public static final int shooterID = 16;
-            public static final double encoderOffset = 0.85;
+            public static final double pivotEncoderOffset = 0.85;
         }
     }
 
@@ -114,6 +118,6 @@ public final class Constants {
 
     public static final class Robot {
         /* this boolean is used to determine if we should flip the path in path planner */
-        public static final boolean isRedAlliance = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+        public static final boolean isRedAlliance = DriverStation.getAlliance().get() != null ? (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) : false;
     }
 }

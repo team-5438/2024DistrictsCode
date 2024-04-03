@@ -19,12 +19,12 @@ public class AmpPresetCommand extends Command {
 
     @Override
     public void execute() {
-        speakerSubsystem.pivotMotor.set(speakerSubsystem.pivotPID.calculate(speakerSubsystem.pivotEncoderDistance, 0.082));
+        speakerSubsystem.pivotMotor.set(speakerSubsystem.pivotPID.calculate(speakerSubsystem.pivotEncoderDistance, 0.12));
     }
 
     @Override
     public boolean isFinished() {
-        if (ampSubsystem.pivotEncoder.getPosition() < 0.2) {
+        if (ampSubsystem.pivotEncoder.getPosition() < 0.1) {
             return true;
         }
         return false;

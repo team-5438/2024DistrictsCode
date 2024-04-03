@@ -21,7 +21,7 @@ public class ManualAimAmpCommand extends Command {
 
     @Override
     public void execute() {
-        pivotSpeed = MathUtil.applyDeadband(operator.getLeftY(), Constants.Operator.leftStick.Y) / 6;
+        pivotSpeed = MathUtil.applyDeadband(operator.getLeftY(), Constants.Operator.leftStick.Y) / 5;
 
         ampSubsystem.pivotMotor.set(pivotSpeed);
     }

@@ -9,9 +9,9 @@ public class LEDSubsystem extends SubsystemBase {
     public LEDStrip strip1;
 
     public LEDSubsystem() {
-        strip0 = new LEDStrip(0, 27);
-        strip1 = new LEDStrip(1, 27);
+        strip0 = new LEDStrip(0, 20);
+        // strip1 = new LEDStrip(1, 27);
 
-        strip1.followStrip(strip0);
+        // strip1.followStrip(strip0);
     }
 }

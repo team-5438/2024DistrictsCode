@@ -28,9 +28,9 @@ public class AmpSubsystem extends SubsystemBase {
         pivotMotor = new CANSparkMax(Constants.Shooter.Amp.pivotID, MotorType.kBrushless);
 
         pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
-        pivotEncoder.setZeroOffset(Constants.Shooter.Amp.encoderOffset);
+        pivotEncoder.setZeroOffset(Constants.Shooter.Amp.pivotEncoderOffset);
 
-        tab = Shuffleboard.getTab(this.toString());
+        tab = Shuffleboard.getTab("Amp Subsystem");
         pivotEncoderShuffleBoard = tab.add("Pivot Encoder", 0.0).getEntry();
     }
 

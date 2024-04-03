@@ -36,8 +36,10 @@ public class LEDStrip {
         int i;
 
         led.setData(ledBuffer);
-        for (i = 0; i < followers.size(); i++) {
-            followers.get(i).led.setData(ledBuffer);
+        if (followers != null) {
+            for (i = 0; i < followers.size(); i++) {
+                followers.get(i).led.setData(ledBuffer);
+            }
         }
     }
 

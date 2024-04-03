@@ -1,8 +1,16 @@
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants;
@@ -17,7 +25,6 @@ public class AlignWithSpeakerCommand extends Command {
 
     private double rotSpeed;
 
-
     public AlignWithSpeakerCommand(PhotonSubsystem photonSubsystem, SwerveSubsystem swerveSubsystem) {
         this.photonSubsystem = photonSubsystem;
         this.swerveSubsystem = swerveSubsystem;
@@ -28,30 +35,53 @@ public class AlignWithSpeakerCommand extends Command {
     @Override
     public void initialize() {
         rotationPID = new PIDController(0.3, 0.0, 0.0);
-
-        /* setup some tolerance to allow us to aim "faster" */
-
-        /* get the tag we want to aim at */
         tag = photonSubsystem.getTag(Constants.AprilTags.speakerCentral);
-
-        /*we're not aligned just yet, so isAligned is false */
+        if (tag != null)
+            rotSpeed = rotationPID.calculate(tag.getYaw(), 0.0) / 6;
+        else
+            return;
     }
 
     @Override
     public void execute() {
-        if (tag != null) {
-            rotSpeed = rotationPID.calculate(tag.getYaw(), 0) / 6;
-        } else {
-            rotSpeed = 0;
-        }
+        swerveSubsystem.drive(new Translation2d(0, 0), -rotSpeed, false);
+
+      /*  // Get robot position
+        Pose2d robotPose = swerveSubsystem.getPose();
+        double robotX = robotPose.getX();
+        double robotY = robotPose.getY();
+
+        System.out.println("robotX: " + robotX);
+        System.out.println("robotY: " + robotY);
+        photonSubsystem.robotX.setDouble(robotX);
+        photonSubsystem.robotY.setDouble(robotY);
+
+        // Get tag position
+        Optional<Pose3d> tagPose = photonSubsystem.aprilTagFieldLayout.getTagPose((int)Constants.AprilTags.speakerCentral);
+        double tagX = tagPose.get().getX();
+        double tagY = tagPose.get().getY();
+
+        photonSubsystem.tagX.setDouble(tagX);
+        photonSubsystem.tagY.setDouble(tagY);
+
+        // Get the difference and then get angle using arctangent
+        double differenceX = robotX - tagX;
+        double differenceY = robotY - tagY;
+        double setAngle = Units.radiansToDegrees(Math.atan2(differenceY, differenceX)) + 90;
+        photonSubsystem.setAngle.setDouble(setAngle);
+
+        System.out.println("setAngle : " + setAngle);
+
+        rotSpeed = rotationPID.calculate(swerveSubsystem.getHeading().getDegrees(), setAngle) / 6;
         swerveSubsystem.drive(new Translation2d(0, 0), rotSpeed, false);
+        */
     }
 
-    @Override
-    public boolean isFinished() {
-        if (tag.getYaw() < Constants.Vision.alignedTolerance || tag == null) {
-            return true;
-        }
-        return false;
-    }
+     @Override
+     public boolean isFinished() {
+         if (tag == null || tag.getYaw() < Constants.Vision.alignedTolerance) {
+             return true;
+         }
+         return false;
+     }
 }

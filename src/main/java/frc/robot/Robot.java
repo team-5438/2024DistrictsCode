@@ -2,9 +2,12 @@ package frc.robot;
 
 import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /**
  * The VM is configured to automatically run this class, and to 
@@ -49,14 +52,6 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-
-        /* constantly update robot pose using pose estimation */
-        EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose();
-        if (pose != null) {
-            m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
-                pose.estimatedPose.toPose2d(),
-                pose.timestampSeconds);
-        }
     }
 
     /* This function is called once each time the robot enters Disabled mode. */
@@ -70,12 +65,15 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+        m_robotContainer.swerveSubsystem.configCurrentLimits(40);
         
         /* make auto aiming default in autonomous */
         m_robotContainer.speakerSubsystem.setDefaultCommand(m_robotContainer.autoAimSpeakerCommand);
 
         /* schedule the autonomous command */
         if (m_autonomousCommand != null) {
+            m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(PathPlannerAuto.getStaringPoseFromAutoFile(Constants.DriveBase.Auto.autoName), Timer.getFPGATimestamp());
             m_autonomousCommand.schedule();
         } 
     }
@@ -85,6 +83,8 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
         /* always intake during autos to make path planning simpler */
         m_robotContainer.intakeSubsystem.intakeMotor.set(1);
+
+        m_robotContainer.speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
     }
 
     @Override
@@ -93,28 +93,54 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
+        m_robotContainer.intakeSubsystem.intakeMotor.set(0);
+        m_robotContainer.swerveSubsystem.configCurrentLimits(80);
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
 
         /* make manual aiming default in teleop mode */
         m_robotContainer.speakerSubsystem.setDefaultCommand(m_robotContainer.manualAimSpeakerCommand);
+
+        /* constantly update robot pose using pose estimation */
+        addPeriodic(() -> {
+            EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose();
+            if (pose != null) {
+                m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
+                        pose.estimatedPose.toPose2d(),
+                        pose.timestampSeconds);
+            }
+        }, 0.05);
     }
 
     /* This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        /* if we can see the right april tag we start auto aiming here */
-        if (m_robotContainer.ampSubsystem.pivotEncoder.getPosition() > 0.2) {
-            m_robotContainer.speakerSubsystem.pivotMotor.set(m_robotContainer.speakerSubsystem.pivotPID.calculate(m_robotContainer.speakerSubsystem.pivotEncoderDistance, 0.082));
-        }
-        if (m_robotContainer.photonSubsystem.getTag(Constants.AprilTags.speakerCentral) != null) {
+        if (Math.abs(MathUtil.applyDeadband(-m_robotContainer.operator.getRightY(), Constants.Operator.rightStick.Y)) > 0.05) {
+            if (m_robotContainer.ampPresetCommand.isScheduled()) {
+                m_robotContainer.ampPresetCommand.cancel();
+            }
+            if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
+                m_robotContainer.autoAimSpeakerCommand.cancel();
+            }
+        } else if (m_robotContainer.ampSubsystem.pivotEncoder.getPosition() > 0.13) {
+            /* if the amp if over a certain angle go into amp preset mode */
+            if (m_robotContainer.ampPresetCommand.isScheduled()) {
+                m_robotContainer.ampPresetCommand.cancel();
+            }
+            if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
+                m_robotContainer.autoAimSpeakerCommand.cancel();
+            }
+            m_robotContainer.ampPresetCommand.schedule();
+        } else if (m_robotContainer.photonSubsystem.getTag(Constants.AprilTags.speakerCentral) != null || m_robotContainer.swerveSubsystem.getPose().getX() < 7) {
+            /* if we can see the right april tag we start auto aiming here */
+            if (m_robotContainer.ampPresetCommand.isScheduled()) {
+                m_robotContainer.ampPresetCommand.cancel();
+            }
+            if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
+                m_robotContainer.autoAimSpeakerCommand.cancel();
+            }
             m_robotContainer.autoAimSpeakerCommand.schedule();
-        }
-
-        // FIXME: this really really really shouldn't be here like it will probably break amp shooting badly
-        if (m_robotContainer.speakerSubsystem.hasNote) {
-            m_robotContainer.speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
         }
     }
 

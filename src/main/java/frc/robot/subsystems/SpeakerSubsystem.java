@@ -4,8 +4,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.ColorSensorV3.ProximitySensorMeasurementRate;
+import com.revrobotics.ColorSensorV3.ProximitySensorResolution;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -22,8 +27,10 @@ public class SpeakerSubsystem extends SubsystemBase {
 
     public DutyCycleEncoder pivotEncoder;
     public PIDController pivotPID;
+    public ArmFeedforward pivotFeedforward;
     public double pivotEncoderDistance; /* Absolute value of distance use this
                                            instead of pivotEncoder.getDistance() */
+    public DigitalInput proximitySensor;
     public boolean hasNote;
 
     /* shuffleboard variables */
@@ -33,6 +40,11 @@ public class SpeakerSubsystem extends SubsystemBase {
     public GenericEntry noteProximityShuffleBoard;
     public GenericEntry autoAimingShuffleBoard;
     public GenericEntry autoAimPivotEncoderShuffleBoard;
+    public GenericEntry speakerRevVelocityShuffleBoard;
+    public GenericEntry hasNoteShuffleBoard;
+    public GenericEntry readyToShootShuffleBoard;
+    public GenericEntry isRevvedShuffleBoard;
+    public GenericEntry autoAimedShuffleBoard;
 
     public ColorSensorV3 colorSensor;
 
@@ -52,11 +64,13 @@ public class SpeakerSubsystem extends SubsystemBase {
         pivotEncoder = new DutyCycleEncoder(Constants.Shooter.Speaker.pivotEncoderDIOPort);
         pivotEncoder.setPositionOffset(Constants.Shooter.Speaker.pivotEncoderOffset);
         pivotPID = Constants.Shooter.Speaker.pivotPID;
+        pivotFeedforward = Constants.Shooter.Speaker.pivotFeedforward;
 
         topEncoder = topShootMotor.getEncoder();
         bottomEncoder = bottomShootMotor.getEncoder();
 
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+        colorSensor.configureProximitySensor(ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
 
         tab = Shuffleboard.getTab("SpeakerSubsystem");
         pivotEncoderShuffleBoard = tab.add("Pivot Encoder", 0.0).getEntry();
@@ -64,27 +78,38 @@ public class SpeakerSubsystem extends SubsystemBase {
         noteProximityShuffleBoard = tab.add("Proximity to Note", 0.0).getEntry();
         autoAimingShuffleBoard = tab.add("Auto Aiming", false).getEntry();
         autoAimPivotEncoderShuffleBoard = tab.add("Auto Aim Pivot Encoder", 0.0).getEntry();
+        speakerRevVelocityShuffleBoard = tab.add("Rev Velocity", 0.0).getEntry();
+        hasNoteShuffleBoard = tab.add("Has Note", false).getEntry();
+        readyToShootShuffleBoard = tab.add("Ready To Shoot", false).getEntry();
+        isRevvedShuffleBoard = tab.add("Revved", false).getEntry();
+        autoAimedShuffleBoard = tab.add("Auto Aimed", false).getEntry();
     }
 
     @Override
     public void periodic() {
+        double colorSensorProximity, topEncoderVelocity;
+        colorSensorProximity = colorSensor.getProximity();
+        topEncoderVelocity = topEncoder.getVelocity();
+
         pivotEncoderDistance = Math.abs(pivotEncoder.getDistance());
 
-        if (colorSensor.getProximity() > 150) {
+        if (colorSensorProximity > 150) {
             hasNote = true;
         } else {
             hasNote = false;
         }
+        hasNoteShuffleBoard.setBoolean(hasNote);
 
         /* add data to shuffleboard here */
         pivotEncoderShuffleBoard.setDouble(pivotEncoderDistance);
-        noteProximityShuffleBoard.setDouble(colorSensor.getProximity());
+        noteProximityShuffleBoard.setDouble(colorSensorProximity);
+        speakerRevVelocityShuffleBoard.setDouble(topEncoderVelocity);
 
-        if (topEncoder.getVelocity() > Constants.Shooter.Speaker.revvedVelocity && bottomEncoder.getVelocity() > Constants.Shooter.Speaker.revvedVelocity) {
+        if (Math.abs(topEncoderVelocity) > Constants.Shooter.Speaker.revvedVelocity) {
             isRevved = true;
-        }
-        else {
+        } else {
             isRevved = false;
         }
+        isRevvedShuffleBoard.setBoolean(isRevved);
     }
 }

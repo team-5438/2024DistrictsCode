@@ -6,12 +6,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.SpeakerSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 
 public class AutoAimSpeakerCommand extends Command {
     private PhotonSubsystem photonSubsystem;
     private SpeakerSubsystem speakerSubsystem;
+    private SwerveSubsystem swerveSubsystem;
     private LEDSubsystem ledSubsystem;
     private PhotonTrackedTarget tag;
 
@@ -25,10 +27,11 @@ public class AutoAimSpeakerCommand extends Command {
     private double[] distanceLookup = { 1.38,  1.57,  1.83,  2.04,  2.29,  2.55,  2.84,  3.09, 3.35,  3.58,  3.8,   4.1, 4.4, 4.7, 4.94, 5.28 };
     private double[] encoderLookup =  { 0.146, 0.143, 0.133, 0.121, 0.112, 0.104, 0.094, 0.09, 0.084, 0.081, 0.078, 0.075, 0.071, 0.064, 0.058, 0.057 };
 
-    public AutoAimSpeakerCommand(SpeakerSubsystem speakerSubsystem, PhotonSubsystem photonSubsystem, LEDSubsystem ledSubsystem) {
+    public AutoAimSpeakerCommand(SpeakerSubsystem speakerSubsystem, PhotonSubsystem photonSubsystem, LEDSubsystem ledSubsystem, SwerveSubsystem swerveSubsystem) {
         this.speakerSubsystem = speakerSubsystem;
         this.photonSubsystem = photonSubsystem;
         this.ledSubsystem = ledSubsystem;        
+        this.swerveSubsystem = swerveSubsystem;
         
         /* override default aiming */
         addRequirements(speakerSubsystem);
@@ -36,10 +39,6 @@ public class AutoAimSpeakerCommand extends Command {
 
     @Override
     public void initialize() {
-        /* on startup we make sure the motors spin at a low speed to make
-         * revving up faster 
-         * TEST: if this actually changes how fast we actually rev up */
-        speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
         /* show that we are auto aiming */
         speakerSubsystem.autoAimingShuffleBoard.setBoolean(true);
     }
@@ -50,8 +49,21 @@ public class AutoAimSpeakerCommand extends Command {
         speakerAngle = 0.0;
 
         tag = photonSubsystem.getTag(Constants.AprilTags.speakerCentral);
+        if (swerveSubsystem.getPose().getX() < 7) {
+            if (speakerSubsystem.hasNote) {
+                /* if so we need to spin up our shooting wheels */
+                speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
+            } else {
+                speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+            }
+        }
         if (tag == null) {
             /* return here to ensure we don't use non-existent tag info */
+            System.out.println("Tag is null :(");
+            return;
+        } else if (speakerDistance > 7.26) {
+            /* return here to ensure we don't shoot out of range */
+            System.out.println("Out of acceptable shooting range");
             return;
         }
         /* calculate the distance from the bottom of the speaker to the robot */
@@ -89,6 +101,22 @@ public class AutoAimSpeakerCommand extends Command {
         //     speakerAngle = 0.12;
         // }
 
+        /* formula version of the above */
+        if (speakerDistance < 1.49) {
+            speakerAngle = 0.204 * Math.pow(Math.E, -0.257 * speakerDistance);
+            speakerAngle += 0.003;
+        } else if (speakerDistance > 4.985) {
+            speakerAngle = -0.005 * (speakerDistance - 4.94) + 0.065;
+            speakerAngle -= 0.003;
+        } else {
+            speakerAngle = -0.00071016 * Math.pow(speakerDistance, 4) + 0.008413 *
+                    Math.pow(speakerDistance, 3) - 0.02889166 *
+                            Math.pow(speakerDistance, 2)
+                    - 0.00144774 * speakerDistance
+                    + 0.18631159;
+            speakerAngle -= 0.001;
+        }
+
         /* auto aiming angle to shuffleboard */
         speakerSubsystem.autoAimPivotEncoderShuffleBoard.setDouble(speakerAngle);
 
@@ -96,23 +124,33 @@ public class AutoAimSpeakerCommand extends Command {
         speakerSubsystem.pivotMotor.set(pivotSpeed);
 
         /* check if our current angle is accurate and if we have a note */
+        double aimError = Math.abs(speakerSubsystem.pivotEncoderDistance - speakerAngle);
+        if (aimError <= Constants.Shooter.Speaker.aimedTolerance) {
+            speakerSubsystem.autoAimedShuffleBoard.setBoolean(true);
+        } else {
+            speakerSubsystem.autoAimedShuffleBoard.setBoolean(false);
+        }
         if (speakerSubsystem.hasNote) {
             /* if so we need to spin up our shooting wheels */
             speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
 
             /* check if shooter wheels are revved and robot is aligned with speaker */
-            if (speakerSubsystem.isRevved && photonSubsystem.isAligned && speakerSubsystem.pivotEncoderDistance <= Constants.Shooter.Speaker.aimedTolerance){
-                /* if so, all 4 conditions are fulfilled and LEDs are green */
+            if (speakerSubsystem.isRevved && photonSubsystem.isAligned && aimError <= Constants.Shooter.Speaker.aimedTolerance){
+                /* if so, all 3 conditions are fulfilled and LEDs are green */
+                speakerSubsystem.readyToShootShuffleBoard.setBoolean(true);
                 ledSubsystem.strip0.solidColorRGB(0, 255, 0);
                 ledSubsystem.strip0.set();
             } else {
                 /* otherwise, LEDs are orange */
+                speakerSubsystem.readyToShootShuffleBoard.setBoolean(false);
                 ledSubsystem.strip0.solidColorRGB(255, 165, 0);
                 ledSubsystem.strip0.set();
             }
         } else {
             /* otherwise lets slow them down to a low speed */
-            speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+            if (speakerSubsystem.topEncoder.getVelocity() < 140 || !speakerSubsystem.hasNote) {
+                speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+            }
             ledSubsystem.strip0.setDefaultLED();
         }
     }
@@ -123,7 +161,7 @@ public class AutoAimSpeakerCommand extends Command {
          * or if the distance is too high to shoot accurately 
          * if we are not in autonomous mode
          * TEST: find what distance is actually inaccurate */
-        if (tag == null || speakerDistance > 5 && !DriverStation.isAutonomous()) {
+        if ((tag == null || speakerDistance > 7.62 && !DriverStation.isAutonomous()) && swerveSubsystem.getPose().getX() > 7.62) {
             return true;
         }
         return false;
@@ -132,9 +170,12 @@ public class AutoAimSpeakerCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         /* we also make sure to stop the motors to ensure nothing funny happens */
-        speakerSubsystem.topShootMotor.set(0);
+        if (tag == null || speakerDistance > 7) {
+            speakerSubsystem.topShootMotor.set(0);
+        }
         /* show that we are no longer auto aiming */
         speakerSubsystem.autoAimingShuffleBoard.setBoolean(false);
+        speakerSubsystem.autoAimedShuffleBoard.setBoolean(false);
 
         ledSubsystem.strip0.setDefaultLED();
     }

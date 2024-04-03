@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -10,7 +11,7 @@ public class Motor {
     public MotorBrand type;
     public int id;
 
-    public TalonSRX talon;
+    public TalonFX talon;
     public CANSparkMax spark;
 
     public Motor(int id, MotorBrand type) {
@@ -20,7 +21,7 @@ public class Motor {
         if (type == MotorBrand.Spark) {
             spark = new CANSparkMax(id, MotorType.kBrushless);
         } else if (type == MotorBrand.Talon) {
-            talon = new TalonSRX(id);
+            talon = new TalonFX(id);
         }
     }
 
@@ -28,7 +29,7 @@ public class Motor {
         if (type == MotorBrand.Spark) {
             spark.set(percent);
         } else if (type == MotorBrand.Talon) {
-            talon.set(ControlMode.PercentOutput, percent);
+            talon.set(percent);
         }
     }
 }

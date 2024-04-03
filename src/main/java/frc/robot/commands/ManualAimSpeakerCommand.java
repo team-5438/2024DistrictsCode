@@ -24,6 +24,14 @@ public class ManualAimSpeakerCommand extends Command {
         pivotSpeed = MathUtil.applyDeadband(-operator.getRightY(), Constants.Operator.rightStick.Y);
         pivotSpeed = MathUtil.clamp(pivotSpeed, -Constants.Shooter.Speaker.maxPivotSpeed, Constants.Shooter.Speaker.maxPivotSpeed);
 
+        /* we use a feed forward when the shooter is below a certain value to keep it from falling
+         * the reason we do this under a certain range is because the steel gears on their own are
+         * able to hold up the shooter without feedforward up to this position
+         */
+        if (speakerSubsystem.pivotEncoderDistance < 0.09) {
+            pivotSpeed += speakerSubsystem.pivotFeedforward.calculate(speakerSubsystem.pivotEncoderDistance, pivotSpeed);
+        }
+
         speakerSubsystem.pivotMotor.set(pivotSpeed);
     }
 

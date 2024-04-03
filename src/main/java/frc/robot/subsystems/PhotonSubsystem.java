@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.io.UncheckedIOException;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -35,12 +37,14 @@ public class PhotonSubsystem extends SubsystemBase {
     public int optimalTagID;
 
     /* pose estimation variables */
-    public GenericEntry pivotEncoderShuffleBoard;
     public AprilTagFieldLayout aprilTagFieldLayout;
     public PhotonPoseEstimator poseEstimator;
     public Transform3d robotToCam;
 
     public ShuffleboardTab tab;
+    public GenericEntry updatedPoseShuffleBoard;
+    public GenericEntry alignedWithSpeakerShuffleBoard;
+    public GenericEntry tagX, tagY, robotX, robotY, setAngle;
 
     public PhotonSubsystem() {
         NT = NetworkTableInstance.getDefault().getTable("photonvision");
@@ -49,7 +53,6 @@ public class PhotonSubsystem extends SubsystemBase {
         } else {
             cam0 = null;
         }
-        tag = getTag(Constants.AprilTags.speakerCentral);
         isAligned = false;
 
         /* pose estimation using photon vision */
@@ -63,8 +66,8 @@ public class PhotonSubsystem extends SubsystemBase {
         /* where is the camera places relative to the robot */
         // TODO: figure the coordinates that we need to put here
         robotToCam = new Transform3d(
-                new Translation3d(0, 0, 0),
-                new Rotation3d(0, 0, Units.degreesToRadians(180)));
+                new Translation3d(Units.inchesToMeters(-11), 0, 0),
+                new Rotation3d(0, Units.degreesToRadians(13), Units.degreesToRadians(180)));
 
         /* start estimating the pose of the robot */
         poseEstimator = new PhotonPoseEstimator(
@@ -76,25 +79,38 @@ public class PhotonSubsystem extends SubsystemBase {
         poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
         tab = Shuffleboard.getTab("PhotonSubsystem");
-        pivotEncoderShuffleBoard = tab.add("Pivot Encoder", 0.0).getEntry();
+        updatedPoseShuffleBoard = tab.add("Updated Pose", "").getEntry();
+        alignedWithSpeakerShuffleBoard = tab.add("Aligned With Speaker", false).getEntry();
+        tagX = tab.add("tag x", 0.0).getEntry();
+        tagY = tab.add("tag y", 0.0).getEntry();
+        robotX = tab.add("robot x", 0.0).getEntry();
+        robotY = tab.add("robot y", 0.0).getEntry();
+        setAngle = tab.add("set angle", 0.0).getEntry();
     }
 
     /**
      * return the estimated pose
      *
-     * @return Optional<EstimatedRobotPose>
+     * @return EstimatedRobotPose
      */
     public EstimatedRobotPose getEstimatedPose() {
-        if (cam0 == null || cameraImage == null) {
-            return null;
-        }
-        if (cam0 == null || !cam0.isConnected()
+        if (cam0 == null || cameraImage == null || !cam0.isConnected()
             || cameraImage.getTargets().size() < 2) {
             return null;
         }
-        // if (poseEstimator.update().isPresent() && poseEstimator.update() != null) {
-        //     return poseEstimator.update().get();
-        // }
+        Optional<EstimatedRobotPose> pose = poseEstimator.update();
+        if (pose != null && pose.isPresent()) {
+            try {
+                if (pose.get() != null) {
+                    updatedPoseShuffleBoard.setString(pose.get().estimatedPose.toString());
+                    return pose.get();
+                }
+                // not even sure we need this here, but just incase:
+                return null;
+            } catch (NoSuchElementException e) {
+                return null;
+            }
+        }
         return null;
     }
 
@@ -128,10 +144,14 @@ public class PhotonSubsystem extends SubsystemBase {
             distanceToOptimalTag = bestTarget.getBestCameraToTarget().getX();
             optimalTagID = bestTarget.getFiducialId();
         }
-        if (tag.getYaw() < Constants.Vision.alignedTolerance) {
+
+        tag = getTag(Constants.AprilTags.speakerCentral);
+        if (tag != null && Math.abs(tag.getYaw()) < Constants.Vision.alignedTolerance) {
             isAligned = true;
+            alignedWithSpeakerShuffleBoard.setBoolean(true);
         } else {
             isAligned = false;
+            alignedWithSpeakerShuffleBoard.setBoolean(false);
         }
     }
 }
