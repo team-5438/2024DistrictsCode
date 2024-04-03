@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.io.UncheckedIOException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
