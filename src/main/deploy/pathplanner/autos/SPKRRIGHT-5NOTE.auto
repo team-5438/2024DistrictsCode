@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRRIGHT-A3-A2"
+            "pathName": null
           }
         },
         {
@@ -62,7 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRRIGHT-A2-A1"
+            "pathName": null
           }
         },
         {
