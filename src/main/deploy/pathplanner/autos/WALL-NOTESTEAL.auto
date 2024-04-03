@@ -2,19 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.67,
-      "y": 6.67
+      "x": 2,
+      "y": 2
     },
-    "rotation": 60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 0.5
+            "pathName": "WALLRIGHT-B5"
           }
         },
         {
@@ -26,13 +26,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRLEFT-A1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "B5-B4"
           }
         },
         {
@@ -44,13 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A1-A2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "B4-B3"
           }
         },
         {
@@ -62,13 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRLEFT-A2-A3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "B3-B2"
           }
         },
         {
@@ -80,19 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A3-B3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "B3-SPKRFRNT"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "B2-B1"
           }
         },
         {
@@ -104,6 +74,6 @@
       ]
     }
   },
-  "folder": "SPKRLEFT",
+  "folder": "WALL",
   "choreoAuto": false
 }

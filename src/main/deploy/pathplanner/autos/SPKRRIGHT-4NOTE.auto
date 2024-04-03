@@ -3,9 +3,9 @@
   "startingPose": {
     "position": {
       "x": 0.67,
-      "y": 6.67
+      "y": 4.4
     },
-    "rotation": 60.0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -26,7 +26,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRLEFT-A1"
+            "pathName": "SPKRRIGHT-A3"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A1-A2"
+            "pathName": "SPKRRIGHT-A3-A2"
           }
         },
         {
@@ -62,31 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRLEFT-A2-A3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "A3-B3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "B3-SPKRFRNT"
+            "pathName": "SPKRRIGHT-A2-A1"
           }
         },
         {
@@ -104,6 +80,6 @@
       ]
     }
   },
-  "folder": "SPKRLEFT",
+  "folder": "SPKRRIGHT",
   "choreoAuto": false
 }
