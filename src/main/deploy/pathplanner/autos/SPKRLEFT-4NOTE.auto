@@ -30,6 +30,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "SPKRMID-A1-A2"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 0.5
@@ -44,25 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A1-A2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SPKRLEFT-A2-A3"
+            "pathName": "SPKRMID-A2-A3"
           }
         },
         {
