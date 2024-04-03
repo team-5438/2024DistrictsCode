@@ -155,7 +155,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Test Paths",
+  "folder": "TEST-PATHS",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

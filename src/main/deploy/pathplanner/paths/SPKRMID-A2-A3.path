@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.58,
-        "y": 4.12
+        "x": 2.85,
+        "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.58,
-        "y": 4.12
+        "x": 2.85,
+        "y": 5.02
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 5.58
+        "x": 2.71,
+        "y": 4.195093864616259
       },
       "prevControl": {
-        "x": 2.0,
-        "y": 4.88
+        "x": 1.5823688550569097,
+        "y": 4.605518036607061
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,8 +39,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
-    "rotateFast": false
+    "rotation": -27.439999999999998,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "SPKRMID",

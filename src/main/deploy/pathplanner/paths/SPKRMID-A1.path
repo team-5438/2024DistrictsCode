@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3,
-        "y": 6.05
+        "x": 1.6593059807524995,
+        "y": 5.897705640154836
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.65,
-        "y": 6.85
+        "x": 2.85,
+        "y": 7.05
       },
       "prevControl": {
-        "x": 1.7103073792140915,
-        "y": 6.50797985667433
+        "x": 2.1313880384950017,
+        "y": 6.3545887196903275
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,8 +39,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 35.0,
-    "rotateFast": false
+    "rotation": 27.76,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "SPKRMID",

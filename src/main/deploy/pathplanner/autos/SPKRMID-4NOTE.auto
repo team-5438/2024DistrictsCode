@@ -30,9 +30,21 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "SPKRMID-A1-AIM"
+            "pathName": "SPKRMID-A1-A2"
           }
         },
         {
@@ -50,37 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRMID-AIM-A2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SPKRMID-A2-AIM"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SPKRMID-AIM-A3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SPKRMID-A3-AIM"
+            "pathName": "SPKRMID-A2-A3"
           }
         },
         {

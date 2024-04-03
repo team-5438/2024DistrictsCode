@@ -3,12 +3,12 @@
   "robotLength": 0.74,
   "holonomicMode": true,
   "pathFolders": [
-    "NOTE-NOTE",
     "LEGACY",
+    "NOTE-NOTE",
     "SPKRLEFT",
     "SPKRMID",
     "SPKRRIGHT",
-    "Test Paths",
+    "TEST-PATHS",
     "WALL"
   ],
   "autoFolders": [
