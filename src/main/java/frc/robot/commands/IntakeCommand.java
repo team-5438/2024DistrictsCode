@@ -23,12 +23,11 @@ public class IntakeCommand extends Command {
 
     @Override
     public void initialize() {
-        ledSubsystem.strip0.solidColorRGB(255, 255, 0);
-        ledSubsystem.strip0.set();
+        ledSubsystem.setFire();
         if (speakerSubsystem.pivotEncoderDistance > 0.1) {
-            speakerSubsystem.feedMotor.set(0.3);
+            speakerSubsystem.feedMotor.set(0);
         } else {
-            speakerSubsystem.feedMotor.set(0.4);
+            speakerSubsystem.feedMotor.set(0.2);
         }
         intakeSubsystem.intakeMotor.set(1);
     }
@@ -37,7 +36,7 @@ public class IntakeCommand extends Command {
     public boolean isFinished() {
         /* end command when we have a note */
         if (speakerSubsystem.hasNote) {
-            new FlashLEDS(ledSubsystem.strip0, greenFlash);
+            ledSubsystem.setForestTinkle();
         } 
         
         return speakerSubsystem.hasNote;
@@ -48,6 +47,6 @@ public class IntakeCommand extends Command {
         speakerSubsystem.feedMotor.set(0);
         intakeSubsystem.intakeMotor.set(0);
 
-        ledSubsystem.strip0.setDefaultLED();
+        ledSubsystem.setDefault();
     }
 }

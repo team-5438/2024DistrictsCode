@@ -54,12 +54,13 @@ public class AutoAimSpeakerCommand extends Command {
                 /* if so we need to spin up our shooting wheels */
                 speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
             } else {
-                speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+                if (!DriverStation.isAutonomous()) {
+                    speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+                }
             }
         }
         if (tag == null) {
             /* return here to ensure we don't use non-existent tag info */
-            System.out.println("Tag is null :(");
             return;
         } else if (speakerDistance > 7.26) {
             /* return here to ensure we don't shoot out of range */
@@ -135,23 +136,23 @@ public class AutoAimSpeakerCommand extends Command {
             speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
 
             /* check if shooter wheels are revved and robot is aligned with speaker */
-            if (speakerSubsystem.isRevved && photonSubsystem.isAligned && aimError <= Constants.Shooter.Speaker.aimedTolerance){
+            if (speakerSubsystem.isRevved && aimError <= Constants.Shooter.Speaker.aimedTolerance){
                 /* if so, all 3 conditions are fulfilled and LEDs are green */
                 speakerSubsystem.readyToShootShuffleBoard.setBoolean(true);
-                ledSubsystem.strip0.solidColorRGB(0, 255, 0);
-                ledSubsystem.strip0.set();
+                ledSubsystem.setGreen();
             } else {
-                /* otherwise, LEDs are orange */
+                /* otherwise, LEDs are default */
                 speakerSubsystem.readyToShootShuffleBoard.setBoolean(false);
-                ledSubsystem.strip0.solidColorRGB(255, 165, 0);
-                ledSubsystem.strip0.set();
+                ledSubsystem.setDefault();
             }
         } else {
             /* otherwise lets slow them down to a low speed */
             if (speakerSubsystem.topEncoder.getVelocity() < 140 || !speakerSubsystem.hasNote) {
-                speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+                if (!DriverStation.isAutonomous()) {
+                    speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+                }
             }
-            ledSubsystem.strip0.setDefaultLED();
+            ledSubsystem.setDefault();
         }
     }
 
@@ -177,6 +178,6 @@ public class AutoAimSpeakerCommand extends Command {
         speakerSubsystem.autoAimingShuffleBoard.setBoolean(false);
         speakerSubsystem.autoAimedShuffleBoard.setBoolean(false);
 
-        ledSubsystem.strip0.setDefaultLED();
+        ledSubsystem.setDefault();
     }
 }

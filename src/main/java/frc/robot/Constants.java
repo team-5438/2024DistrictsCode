@@ -1,12 +1,12 @@
 package frc.robot;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.utils.Controller;
 import frc.robot.utils.StickDeadband;
-
-import com.pathplanner.lib.util.PIDConstants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -42,7 +42,7 @@ public final class Constants {
         public static final class Auto {
             public static final PIDConstants translationPID = new PIDConstants(10.0, 0.0, 0.0);
             public static final PIDConstants rotationPID = new PIDConstants(0.1, 0.0, 0.0); /* TODO: tune */
-            public static final String autoName = "bow tie";
+            public static final String autoName = "SPKRMID-4NOTE";
         }
     }
 

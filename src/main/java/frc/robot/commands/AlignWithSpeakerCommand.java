@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -14,6 +15,8 @@ public class AlignWithSpeakerCommand extends Command {
     private SwerveSubsystem swerveSubsystem;
     private PIDController rotationPID;
     private PhotonTrackedTarget tag;
+
+    private Rotation2d startHeading;
 
     private double rotSpeed;
 
@@ -32,6 +35,7 @@ public class AlignWithSpeakerCommand extends Command {
             rotSpeed = rotationPID.calculate(tag.getYaw(), 0.0) / 6;
         else
             return;
+        startHeading = swerveSubsystem.getHeading();
     }
 
     @Override
@@ -74,6 +78,9 @@ public class AlignWithSpeakerCommand extends Command {
          if (tag == null || tag.getYaw() < Constants.Vision.alignedTolerance) {
              return true;
          }
-         return false;
+         if (Math.abs(startHeading.minus(swerveSubsystem.getHeading()).getRadians()) < Math.toRadians(Constants.Vision.alignedTolerance)) {
+            return true;
+         }
+        return false;
      }
 }

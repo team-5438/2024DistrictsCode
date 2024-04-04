@@ -18,14 +18,8 @@
     "SPKRRIGHT",
     "WALL"
   ],
-<<<<<<< HEAD
-  "autoFolders": [],
-  "defaultMaxVel": 4.0,
-  "defaultMaxAccel": 2.0,
-=======
   "defaultMaxVel": 5.0,
   "defaultMaxAccel": 2.5,
->>>>>>> 46ec0c9ade85d0a7f496b06326a144c1cfe7a4e4
   "defaultMaxAngVel": 180.0,
   "defaultMaxAngAccel": 90.0,
   "maxModuleSpeed": 5.5

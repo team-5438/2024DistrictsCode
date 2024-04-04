@@ -35,7 +35,11 @@ public class Robot extends TimedRobot {
             System.out.println("Couldn't start the camera server");
             e.printStackTrace();
         }
-        m_robotContainer.ledSubsystem.strip0.setDefaultLED();
+        m_robotContainer.ledSubsystem.setDefault();
+
+        addPeriodic(() -> {
+            m_robotContainer.speakerSubsystem.colorSensorProximity = m_robotContainer.speakerSubsystem.colorSensor.getProximity();
+        }, 0.05);
     }
 
     /**
@@ -85,6 +89,7 @@ public class Robot extends TimedRobot {
         m_robotContainer.intakeSubsystem.intakeMotor.set(1);
 
         m_robotContainer.speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
+        m_robotContainer.speakerSubsystem.bottomShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
     }
 
     @Override
@@ -101,22 +106,13 @@ public class Robot extends TimedRobot {
 
         /* make manual aiming default in teleop mode */
         m_robotContainer.speakerSubsystem.setDefaultCommand(m_robotContainer.manualAimSpeakerCommand);
-
-        /* constantly update robot pose using pose estimation */
-        addPeriodic(() -> {
-            EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose();
-            if (pose != null) {
-                m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
-                        pose.estimatedPose.toPose2d(),
-                        pose.timestampSeconds);
-            }
-        }, 0.05);
     }
 
     /* This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        if (Math.abs(MathUtil.applyDeadband(-m_robotContainer.operator.getRightY(), Constants.Operator.rightStick.Y)) > 0.05) {
+        if (Math.abs(MathUtil.applyDeadband(-m_robotContainer.operator.getRightY(), Constants.Operator.rightStick.Y)) > 0.05
+            || m_robotContainer.operator.getL2Axis() > 0.1) {
             if (m_robotContainer.ampPresetCommand.isScheduled()) {
                 m_robotContainer.ampPresetCommand.cancel();
             }
@@ -141,6 +137,14 @@ public class Robot extends TimedRobot {
                 m_robotContainer.autoAimSpeakerCommand.cancel();
             }
             m_robotContainer.autoAimSpeakerCommand.schedule();
+        }
+
+        /* constantly update robot pose using pose estimation */
+        EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose();
+        if (pose != null) {
+            m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
+                    pose.estimatedPose.toPose2d(),
+                    pose.timestampSeconds);
         }
     }
 

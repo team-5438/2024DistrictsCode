@@ -10,9 +10,13 @@ import com.revrobotics.ColorSensorV3.ProximitySensorResolution;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
@@ -20,6 +24,7 @@ import edu.wpi.first.wpilibj.I2C;
 import frc.robot.Constants;
 
 public class SpeakerSubsystem extends SubsystemBase {
+    //private NetworkTable NT;
     public CANSparkMax pivotMotor;
     public CANSparkMax topShootMotor;
     public CANSparkMax bottomShootMotor;
@@ -32,6 +37,8 @@ public class SpeakerSubsystem extends SubsystemBase {
                                            instead of pivotEncoder.getDistance() */
     public DigitalInput proximitySensor;
     public boolean hasNote;
+
+    public double colorSensorProximity;
 
     /* shuffleboard variables */
     public ShuffleboardTab tab;
@@ -53,6 +60,7 @@ public class SpeakerSubsystem extends SubsystemBase {
     public RelativeEncoder bottomEncoder;
 
     public SpeakerSubsystem() {
+       // NT = NetworkTableInstance.getDefault().getTable("photonvision");
         pivotMotor = new CANSparkMax(Constants.Shooter.Speaker.pivotID, MotorType.kBrushless);
         feedMotor = new CANSparkMax(Constants.Shooter.Speaker.feedMotorID, MotorType.kBrushless);
         feedMotor.setInverted(true);
@@ -87,8 +95,7 @@ public class SpeakerSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double colorSensorProximity, topEncoderVelocity;
-        colorSensorProximity = colorSensor.getProximity();
+        double topEncoderVelocity;
         topEncoderVelocity = topEncoder.getVelocity();
 
         pivotEncoderDistance = Math.abs(pivotEncoder.getDistance());

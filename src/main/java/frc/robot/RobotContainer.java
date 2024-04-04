@@ -116,7 +116,7 @@ public class RobotContainer {
             new InstantCommand(() -> speakerSubsystem.feedMotor.set(-0.1)),
             new WaitCommand(0.1),
             new InstantCommand(() -> speakerSubsystem.feedMotor.set(0)),
-            new InstantCommand(() -> ledSubsystem.strip0.setDefaultLED())
+            new InstantCommand(() -> ledSubsystem.setDefault())
         ));
 
         /* shoot note out of speaker shooter */
