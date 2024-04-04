@@ -27,6 +27,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ManualAimAmpCommand;
 import frc.robot.commands.ManualAimSpeakerCommand;
 import frc.robot.commands.RevShooterWheelsCommand;
+import frc.robot.commands.SetSpeakerPositionCommand;
 import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -64,15 +65,21 @@ public class RobotContainer {
         // The robot's subsystems and commands are defined here...
         /* subsystems */
         speakerSubsystem = new SpeakerSubsystem();
+        System.out.println("Speaker Subsystem");
         ampSubsystem = new AmpSubsystem();
+        System.out.println("Amp Subsystem");
         photonSubsystem = new PhotonSubsystem();
+        System.out.println("Photon Subsystem");
         intakeSubsystem = new IntakeSubsystem();
+        System.out.println("Intake Subsystem");
         climberSubsystem = new ClimberSubsystem();
+        System.out.println("Climber Subsystem");
         ledSubsystem = new LEDSubsystem();
+        System.out.println("Led Subsystem");
 
         /* commands */
         manualAimSpeakerCommand = new ManualAimSpeakerCommand(speakerSubsystem, operator);
-        autoAimSpeakerCommand = new AutoAimSpeakerCommand(speakerSubsystem, photonSubsystem, ledSubsystem, swerveSubsystem);
+        autoAimSpeakerCommand = new AutoAimSpeakerCommand(speakerSubsystem, photonSubsystem, ledSubsystem, swerveSubsystem, operator);
         manualAimAmpCommand = new ManualAimAmpCommand(ampSubsystem, operator);
         ampPresetCommand = new AmpPresetCommand(speakerSubsystem, ampSubsystem);
 
@@ -137,12 +144,16 @@ public class RobotContainer {
         /* bring climbers up and down */
         new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.75));
         new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.75));
+
+        /* Source preset */
+        new JoystickButton(operator, PS4Controller.Button.kCross.value).whileTrue(new SetSpeakerPositionCommand(speakerSubsystem, 0.1176));
     }
 
     private void namedCommands() {
         NamedCommands.registerCommand("Shoot", new FeedCommand(speakerSubsystem, intakeSubsystem, 1).withTimeout(1));
         NamedCommands.registerCommand("Align with Speaker", new AlignWithSpeakerCommand(photonSubsystem, swerveSubsystem));
         NamedCommands.registerCommand("Is Revved", new WaitUntilCommand(() -> speakerSubsystem.isRevved));
+        // NamedCommands.registerCommand("Aim Speaker", new SetSpeakerPositionCommand(speakerSubsystem, 0.0));
     }
 
     public Command getAutonomousCommand() {

@@ -19,6 +19,7 @@ public class AlignWithSpeakerCommand extends Command {
     private Rotation2d startHeading;
 
     private double rotSpeed;
+    private double yawOffset;
 
     public AlignWithSpeakerCommand(PhotonSubsystem photonSubsystem, SwerveSubsystem swerveSubsystem) {
         this.photonSubsystem = photonSubsystem;
@@ -31,8 +32,9 @@ public class AlignWithSpeakerCommand extends Command {
     public void initialize() {
         rotationPID = new PIDController(0.3, 0.0, 0.0);
         tag = photonSubsystem.getTag(Constants.AprilTags.speakerCentral);
-        if (tag != null)
-            rotSpeed = rotationPID.calculate(tag.getYaw(), 0.0) / 6;
+        if (tag != null){
+            yawOffset = tag.getYaw();
+            rotSpeed = rotationPID.calculate(yawOffset, 0.0) / 6;}
         else
             return;
         startHeading = swerveSubsystem.getHeading();
@@ -40,7 +42,10 @@ public class AlignWithSpeakerCommand extends Command {
 
     @Override
     public void execute() {
-        swerveSubsystem.drive(new Translation2d(0, 0), -rotSpeed, false);
+        swerveSubsystem.drive(new Translation2d(0, 0), rotSpeed, false);
+        if (tag != null) {
+            System.out.println(tag.getYaw());
+        }
 
       /*  // Get robot position
         Pose2d robotPose = swerveSubsystem.getPose();
@@ -75,11 +80,26 @@ public class AlignWithSpeakerCommand extends Command {
 
      @Override
      public boolean isFinished() {
-         if (tag == null || tag.getYaw() < Constants.Vision.alignedTolerance) {
-             return true;
+        //  if (tag == null || tag.getYaw() < Constants.Vision.alignedTolerance) {
+        //      return true;
+        //  }
+        //  if (Math.abs(startHeading.minus(swerveSubsystem.getHeading()).getRadians()) < Math.toRadians(Constants.Vision.alignedTolerance)) {
+        //     return true;
+        //  }
+        // if (tag == null) {
+        //     return true;
+        // }
+         if(yawOffset < 0){
+            if(swerveSubsystem.getHeading().getDegrees() < (startHeading.getDegrees() + yawOffset + 2)
+                || swerveSubsystem.getHeading().getDegrees() > (startHeading.getDegrees() + yawOffset - 2)){
+                return true;
+            }
          }
-         if (Math.abs(startHeading.minus(swerveSubsystem.getHeading()).getRadians()) < Math.toRadians(Constants.Vision.alignedTolerance)) {
-            return true;
+         if(yawOffset > 0){
+            if(swerveSubsystem.getHeading().getDegrees() < (startHeading.getDegrees() - yawOffset + 2)
+                || swerveSubsystem.getHeading().getDegrees() > (startHeading.getDegrees() - yawOffset - 2)){
+                return true;
+            }
          }
         return false;
      }

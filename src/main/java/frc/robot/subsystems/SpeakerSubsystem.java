@@ -77,7 +77,7 @@ public class SpeakerSubsystem extends SubsystemBase {
         topEncoder = topShootMotor.getEncoder();
         bottomEncoder = bottomShootMotor.getEncoder();
 
-        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+        colorSensor = new ColorSensorV3(I2C.Port.kMXP);
         colorSensor.configureProximitySensor(ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
 
         tab = Shuffleboard.getTab("SpeakerSubsystem");
@@ -99,6 +99,7 @@ public class SpeakerSubsystem extends SubsystemBase {
         topEncoderVelocity = topEncoder.getVelocity();
 
         pivotEncoderDistance = Math.abs(pivotEncoder.getDistance());
+        colorSensorProximity = colorSensor.getProximity();
 
         if (colorSensorProximity > 150) {
             hasNote = true;

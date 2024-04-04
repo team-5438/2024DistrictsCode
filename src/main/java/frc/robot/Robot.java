@@ -37,9 +37,9 @@ public class Robot extends TimedRobot {
         }
         m_robotContainer.ledSubsystem.setDefault();
 
-        addPeriodic(() -> {
-            m_robotContainer.speakerSubsystem.colorSensorProximity = m_robotContainer.speakerSubsystem.colorSensor.getProximity();
-        }, 0.05);
+        // addPeriodic(() -> {
+        //     m_robotContainer.speakerSubsystem.colorSensorProximity = m_robotContainer.speakerSubsystem.colorSensor.getProximity();
+        // }, 0.05);
     }
 
     /**
@@ -99,6 +99,8 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         m_robotContainer.intakeSubsystem.intakeMotor.set(0);
+        m_robotContainer.speakerSubsystem.topShootMotor.set(0);
+        m_robotContainer.speakerSubsystem.bottomShootMotor.set(0);
         m_robotContainer.swerveSubsystem.configCurrentLimits(80);
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();

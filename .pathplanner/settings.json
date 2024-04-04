@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.74,
-  "robotLength": 0.74,
+  "robotWidth": 0.86,
+  "robotLength": 0.86,
   "holonomicMode": true,
   "pathFolders": [
     "LEGACY",
@@ -19,7 +19,7 @@
     "WALL"
   ],
   "defaultMaxVel": 5.0,
-  "defaultMaxAccel": 2.5,
+  "defaultMaxAccel": 2.75,
   "defaultMaxAngVel": 180.0,
   "defaultMaxAngAccel": 90.0,
   "maxModuleSpeed": 5.5

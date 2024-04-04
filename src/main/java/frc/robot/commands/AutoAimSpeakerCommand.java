@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants;
@@ -17,6 +19,8 @@ public class AutoAimSpeakerCommand extends Command {
     private LEDSubsystem ledSubsystem;
     private PhotonTrackedTarget tag;
 
+    private PS4Controller operator;
+
     /* speed of speaker pivot as a percentage */
     private double pivotSpeed;
     /* distance from the speaker in inches */
@@ -27,11 +31,12 @@ public class AutoAimSpeakerCommand extends Command {
     private double[] distanceLookup = { 1.38,  1.57,  1.83,  2.04,  2.29,  2.55,  2.84,  3.09, 3.35,  3.58,  3.8,   4.1, 4.4, 4.7, 4.94, 5.28 };
     private double[] encoderLookup =  { 0.146, 0.143, 0.133, 0.121, 0.112, 0.104, 0.094, 0.09, 0.084, 0.081, 0.078, 0.075, 0.071, 0.064, 0.058, 0.057 };
 
-    public AutoAimSpeakerCommand(SpeakerSubsystem speakerSubsystem, PhotonSubsystem photonSubsystem, LEDSubsystem ledSubsystem, SwerveSubsystem swerveSubsystem) {
+    public AutoAimSpeakerCommand(SpeakerSubsystem speakerSubsystem, PhotonSubsystem photonSubsystem, LEDSubsystem ledSubsystem, SwerveSubsystem swerveSubsystem, PS4Controller operator) {
         this.speakerSubsystem = speakerSubsystem;
         this.photonSubsystem = photonSubsystem;
         this.ledSubsystem = ledSubsystem;        
         this.swerveSubsystem = swerveSubsystem;
+        this.operator = operator;
         
         /* override default aiming */
         addRequirements(speakerSubsystem);
@@ -50,12 +55,14 @@ public class AutoAimSpeakerCommand extends Command {
 
         tag = photonSubsystem.getTag(Constants.AprilTags.speakerCentral);
         if (swerveSubsystem.getPose().getX() < 7) {
-            if (speakerSubsystem.hasNote) {
-                /* if so we need to spin up our shooting wheels */
-                speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
-            } else {
-                if (!DriverStation.isAutonomous()) {
-                    speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+            if (!operator.getRawButton(PS4Controller.Button.kL1.value)) {
+                if (speakerSubsystem.hasNote) {
+                    /* if so we need to spin up our shooting wheels */
+                    speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
+                } else {
+                    if (!DriverStation.isAutonomous()) {
+                        speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+                    }
                 }
             }
         }
@@ -133,7 +140,9 @@ public class AutoAimSpeakerCommand extends Command {
         }
         if (speakerSubsystem.hasNote) {
             /* if so we need to spin up our shooting wheels */
-            speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
+            if (!operator.getRawButton(PS4Controller.Button.kL1.value)) {
+                speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.shootingSpeed);
+            }
 
             /* check if shooter wheels are revved and robot is aligned with speaker */
             if (speakerSubsystem.isRevved && aimError <= Constants.Shooter.Speaker.aimedTolerance){
@@ -149,7 +158,10 @@ public class AutoAimSpeakerCommand extends Command {
             /* otherwise lets slow them down to a low speed */
             if (speakerSubsystem.topEncoder.getVelocity() < 140 || !speakerSubsystem.hasNote) {
                 if (!DriverStation.isAutonomous()) {
-                    speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+
+                    if (!operator.getRawButton(PS4Controller.Button.kL1.value)) {
+                        speakerSubsystem.topShootMotor.set(Constants.Shooter.Speaker.idleSpeed);
+                    }
                 }
             }
             ledSubsystem.setDefault();
@@ -171,8 +183,10 @@ public class AutoAimSpeakerCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         /* we also make sure to stop the motors to ensure nothing funny happens */
-        if (tag == null || speakerDistance > 7) {
-            speakerSubsystem.topShootMotor.set(0);
+        if ((tag == null || speakerDistance > 7) && !DriverStation.isAutonomous()) {
+            if (!operator.getRawButton(PS4Controller.Button.kL1.value)) {
+                speakerSubsystem.topShootMotor.set(0);
+            }
         }
         /* show that we are no longer auto aiming */
         speakerSubsystem.autoAimingShuffleBoard.setBoolean(false);
