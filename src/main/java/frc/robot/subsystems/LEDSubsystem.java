@@ -24,7 +24,7 @@ public class LEDSubsystem extends SubsystemBase {
     
     public void setDefault(){
         //0.11 = color1, 0.31 = color2
-        blinkin.set(Constants.Robot.isRedAlliance ? -0.31 : -0.29);
+        // blinkin.set(Constants.Robot.isRedAlliance ? -0.31 : -0.29);
     }
 
     public void setForestTinkle(){

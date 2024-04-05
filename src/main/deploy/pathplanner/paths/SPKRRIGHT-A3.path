@@ -33,10 +33,45 @@
       "waypointRelativePos": 0.85,
       "rotationDegrees": -23.0,
       "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -26.0,
+      "rotateFast": true
     }
   ],
-  "constraintZones": [],
-  "eventMarkers": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.55,
+      "maxWaypointRelativePos": 0.75,
+      "constraints": {
+        "maxVelocity": 0.2,
+        "maxAcceleration": 2.75,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 90.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.65,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.0,
     "maxAcceleration": 2.75,

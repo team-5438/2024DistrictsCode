@@ -29,7 +29,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.35,
+      "maxWaypointRelativePos": 0.8,
+      "constraints": {
+        "maxVelocity": 0.45,
+        "maxAcceleration": 2.75,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 90.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",

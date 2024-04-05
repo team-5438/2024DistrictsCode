@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
         try {
-            CameraServer.startAutomaticCapture();
+            // CameraServer.startAutomaticCapture();
         } catch(Error e) {
             System.out.println("Couldn't start the camera server");
             e.printStackTrace();
@@ -142,12 +142,12 @@ public class Robot extends TimedRobot {
         }
 
         /* constantly update robot pose using pose estimation */
-        EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose();
-        if (pose != null) {
-            m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
-                    pose.estimatedPose.toPose2d(),
-                    pose.timestampSeconds);
-        }
+        // EstimatedRobotPose pose = m_robotContainer.photonSubsystem.getEstimatedPose();
+        // if (pose != null) {
+        //     m_robotContainer.swerveSubsystem.swerveDrive.addVisionMeasurement(
+        //             pose.estimatedPose.toPose2d(),
+        //             pose.timestampSeconds);
+        // }
     }
 
     @Override

@@ -20,7 +20,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
@@ -242,9 +244,17 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return Drive command.
      */
     public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
-            DoubleSupplier angularRotationX, BooleanSupplier fieldOriented) {
+            DoubleSupplier angularRotationX, BooleanSupplier fieldOriented, BooleanSupplier reverseRobotOriented) {
         return run(() -> {
-            if (fieldOriented.getAsBoolean()) {
+            if (!reverseRobotOriented.getAsBoolean()) {
+                swerveDrive.drive(
+                        new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
+                            Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
+                        Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
+                        false,
+                        false
+                        );
+            } else if (fieldOriented.getAsBoolean()) {
                 swerveDrive.drive(
                         new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
                             Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
@@ -252,7 +262,7 @@ public class SwerveSubsystem extends SubsystemBase {
                         true,
                         false
                         );
-            } else {
+            } else if (!fieldOriented.getAsBoolean()) {
                 swerveDrive.drive(
                         new Translation2d(-Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
                             -Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),

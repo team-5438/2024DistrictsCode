@@ -14,7 +14,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
+            "waitTime": 0.7
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SPKRRIGHT-A3"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -26,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRRIGHT-B5"
+            "pathName": "A3-B5"
           }
         },
         {
@@ -69,12 +81,6 @@
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AIM-B3"
           }
         }
       ]

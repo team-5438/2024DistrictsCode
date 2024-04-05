@@ -105,9 +105,10 @@ public class RobotContainer {
 
         /* Boolean supplier which determines if the robot is field or robot oriented */
         BooleanSupplier robotOriented = () -> !driver.getLeftBumper();
+        BooleanSupplier reverseRobotOriented = () -> !driver.getRightBumper();
 
         /* define and register the swerve controls */
-        Command driverControls = swerveSubsystem.driveCommand(translationX, translationY, angularRotationX, robotOriented);
+        Command driverControls = swerveSubsystem.driveCommand(translationX, translationY, angularRotationX, robotOriented, reverseRobotOriented);
         swerveSubsystem.setDefaultCommand(driverControls);
 
         /* configure binds */
@@ -142,8 +143,8 @@ public class RobotContainer {
         new JoystickButton(operator, PS4Controller.Button.kCircle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, -1));
 
         /* bring climbers up and down */
-        new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.75));
-        new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.75));
+        new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.94));
+        new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.94));
 
         /* Source preset */
         new JoystickButton(operator, PS4Controller.Button.kCross.value).whileTrue(new SetSpeakerPositionCommand(speakerSubsystem, 0.1176));
