@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 3.9,
-        "y": 4.55
+        "y": 4.05
       },
       "isLocked": false,
       "linkedName": null
@@ -36,25 +36,7 @@
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
     "maxAcceleration": 2.75,
