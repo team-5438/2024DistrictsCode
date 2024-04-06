@@ -42,7 +42,7 @@ public final class Constants {
         public static final class Auto {
             public static final PIDConstants translationPID = new PIDConstants(10.0, 0.0, 0.0);
             public static final PIDConstants rotationPID = new PIDConstants(0.1, 0.0, 0.0); /* TODO: tune */
-            public static final String autoName = "SPKRRIGHT-1NOTE";
+            public static final String autoName = "bow tie";
         }
     }
 

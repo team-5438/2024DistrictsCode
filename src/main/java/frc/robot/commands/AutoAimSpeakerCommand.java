@@ -112,7 +112,7 @@ public class AutoAimSpeakerCommand extends Command {
         /* formula version of the above */
         if (speakerDistance < 1.49) {
             speakerAngle = 0.204 * Math.pow(Math.E, -0.257 * speakerDistance);
-            speakerAngle += 0.003;
+            speakerAngle += 0.005;
         } else if (speakerDistance > 4.985) {
             speakerAngle = -0.005 * (speakerDistance - 4.94) + 0.065;
             speakerAngle -= 0.003;
@@ -122,7 +122,7 @@ public class AutoAimSpeakerCommand extends Command {
                             Math.pow(speakerDistance, 2)
                     - 0.00144774 * speakerDistance
                     + 0.18631159;
-            speakerAngle -= 0.001;
+            speakerAngle -= 0.00;
         }
 
         /* auto aiming angle to shuffleboard */

@@ -2,61 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.290597959227301,
-      "y": 5.550936522700434
+      "x": 1.42,
+      "y": 1.59
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 1.25
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "WALLRIGHT-B4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "go up"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.75
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "left up"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Uper"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "left down"
+            "pathName": "B5-AIM"
           }
         },
         {
@@ -74,19 +38,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "right down"
+            "pathName": "AIM-B4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "right up"
+            "pathName": "B4-AIM"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Uper"
+            "pathName": "AIM-B3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B3-AIM"
           }
         },
         {
@@ -104,6 +86,6 @@
       ]
     }
   },
-  "folder": "LEGACY",
+  "folder": "WALL",
   "choreoAuto": false
 }
