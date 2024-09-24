@@ -12,7 +12,6 @@ public class AmpPresetCommand extends Command {
     public AmpPresetCommand(SpeakerSubsystem speakerSubsystem, AmpSubsystem ampSubsystem) {
         this.speakerSubsystem = speakerSubsystem;
         this.ampSubsystem = ampSubsystem;
-        
         /* override default aiming */
         addRequirements(speakerSubsystem);
     }

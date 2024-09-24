@@ -114,31 +114,31 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         if (Math.abs(MathUtil.applyDeadband(-m_robotContainer.operator.getRightY(), Constants.Operator.rightStick.Y)) > 0.05
-            || m_robotContainer.operator.getL2Axis() > 0.1) {
-            if (m_robotContainer.ampPresetCommand.isScheduled()) {
-                m_robotContainer.ampPresetCommand.cancel();
-            }
+            /* || m_robotContainer.operator.getL2Axis() > 0.1 */) {
+            // if (m_robotContainer.ampPresetCommand.isScheduled()) {
+            //     m_robotContainer.ampPresetCommand.cancel();
+            // }
             if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
                 m_robotContainer.autoAimSpeakerCommand.cancel();
             }
-        } else if (m_robotContainer.ampSubsystem.pivotEncoder.getPosition() > 0.13) {
-            /* if the amp if over a certain angle go into amp preset mode */
-            if (m_robotContainer.ampPresetCommand.isScheduled()) {
-                m_robotContainer.ampPresetCommand.cancel();
-            }
-            if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
-                m_robotContainer.autoAimSpeakerCommand.cancel();
-            }
-            m_robotContainer.ampPresetCommand.schedule();
-        } else if (m_robotContainer.photonSubsystem.getTag(Constants.AprilTags.speakerCentral) != null || m_robotContainer.swerveSubsystem.getPose().getX() < 7) {
+        // } else if (m_robotContainer.ampSubsystem.pivotEncoder.getPosition() > 0.13) {
+        //     /* if the amp if over a certain angle go into amp preset mode */
+        //     if (m_robotContainer.ampPresetCommand.isScheduled()) {
+        //         m_robotContainer.ampPresetCommand.cancel();
+        //     }
+        //     if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
+        //         m_robotContainer.autoAimSpeakerCommand.cancel();
+        //     }
+        //     m_robotContainer.ampPresetCommand.schedule();
+        // } else if (m_robotContainer.photonSubsystem.getTag(Constants.AprilTags.speakerCentral) != null || m_robotContainer.swerveSubsystem.getPose().getX() < 7) {
             /* if we can see the right april tag we start auto aiming here */
-            if (m_robotContainer.ampPresetCommand.isScheduled()) {
-                m_robotContainer.ampPresetCommand.cancel();
-            }
-            if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
-                m_robotContainer.autoAimSpeakerCommand.cancel();
-            }
-            m_robotContainer.autoAimSpeakerCommand.schedule();
+            // if (m_robotContainer.ampPresetCommand.isScheduled()) {
+            //     m_robotContainer.ampPresetCommand.cancel();
+            // }
+            // if (m_robotContainer.autoAimSpeakerCommand.isScheduled()) {
+            //     m_robotContainer.autoAimSpeakerCommand.cancel();
+            // }
+            // m_robotContainer.autoAimSpeakerCommand.schedule();
         }
 
         /* constantly update robot pose using pose estimation */

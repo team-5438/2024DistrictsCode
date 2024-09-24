@@ -28,7 +28,7 @@ public class ManualAimSpeakerCommand extends Command {
          * the reason we do this under a certain range is because the steel gears on their own are
          * able to hold up the shooter without feedforward up to this position
          */
-        if (speakerSubsystem.pivotEncoderDistance < 0.09) {
+        if (speakerSubsystem.pivotEncoderDistance < 0.116) {
             pivotSpeed += speakerSubsystem.pivotFeedforward.calculate(speakerSubsystem.pivotEncoderDistance, pivotSpeed);
         }
 

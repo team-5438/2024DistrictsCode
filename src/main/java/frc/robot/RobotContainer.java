@@ -28,6 +28,7 @@ import frc.robot.commands.ManualAimAmpCommand;
 import frc.robot.commands.ManualAimSpeakerCommand;
 import frc.robot.commands.RevShooterWheelsCommand;
 import frc.robot.commands.SetSpeakerPositionCommand;
+import frc.robot.commands.ShootAmpCommand;
 import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -46,7 +47,7 @@ public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
     public final SpeakerSubsystem speakerSubsystem;
-    public final AmpSubsystem ampSubsystem;
+    // public final AmpSubsystem ampSubsystem;
     public final PhotonSubsystem photonSubsystem;
     public final IntakeSubsystem intakeSubsystem;
     public final ClimberSubsystem climberSubsystem;
@@ -54,8 +55,8 @@ public class RobotContainer {
 
     public final ManualAimSpeakerCommand manualAimSpeakerCommand;
     public final AutoAimSpeakerCommand autoAimSpeakerCommand;
-    public final ManualAimAmpCommand manualAimAmpCommand;
-    public final AmpPresetCommand  ampPresetCommand;
+    // public final ManualAimAmpCommand manualAimAmpCommand;
+    // public final AmpPresetCommand  ampPresetCommand;
 
     public final XboxController driver = new XboxController(Constants.Driver.id);
     public final PS4Controller operator = new PS4Controller(Constants.Operator.id);
@@ -66,8 +67,8 @@ public class RobotContainer {
         /* subsystems */
         speakerSubsystem = new SpeakerSubsystem();
         System.out.println("Speaker Subsystem");
-        ampSubsystem = new AmpSubsystem();
-        System.out.println("Amp Subsystem");
+        // ampSubsystem = new AmpSubsystem();
+        // System.out.println("Amp Subsystem");
         photonSubsystem = new PhotonSubsystem();
         System.out.println("Photon Subsystem");
         intakeSubsystem = new IntakeSubsystem();
@@ -80,11 +81,11 @@ public class RobotContainer {
         /* commands */
         manualAimSpeakerCommand = new ManualAimSpeakerCommand(speakerSubsystem, operator);
         autoAimSpeakerCommand = new AutoAimSpeakerCommand(speakerSubsystem, photonSubsystem, ledSubsystem, swerveSubsystem, operator);
-        manualAimAmpCommand = new ManualAimAmpCommand(ampSubsystem, operator);
-        ampPresetCommand = new AmpPresetCommand(speakerSubsystem, ampSubsystem);
+        // manualAimAmpCommand = new ManualAimAmpCommand(ampSubsystem, operator);
+        // ampPresetCommand = new AmpPresetCommand(speakerSubsystem, ampSubsystem);
 
         /* set default commands (NOTE: some of these commands may have binds inside of them) */
-        ampSubsystem.setDefaultCommand(manualAimAmpCommand);
+        // ampSubsystem.setDefaultCommand(manualAimAmpCommand);
 
         // The robot's bindings are defined here...
         configureBindings();
@@ -139,8 +140,8 @@ public class RobotContainer {
         ));
 
         /* shoot note out of amp shooter */
-        new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, 1));
-        new JoystickButton(operator, PS4Controller.Button.kCircle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, -1));
+        // new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, 1));
+        // new JoystickButton(operator, PS4Controller.Button.kCircle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, -1));
 
         /* bring climbers up and down */
         new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.94));
@@ -148,6 +149,8 @@ public class RobotContainer {
 
         /* Source preset */
         new JoystickButton(operator, PS4Controller.Button.kCross.value).whileTrue(new SetSpeakerPositionCommand(speakerSubsystem, 0.1176));
+
+        new JoystickButton(operator, PS4Controller.Button.kTouchpad.value).whileTrue(new ShootAmpCommand(speakerSubsystem));
     }
 
     private void namedCommands() {

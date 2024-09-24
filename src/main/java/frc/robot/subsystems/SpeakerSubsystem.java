@@ -67,7 +67,7 @@ public class SpeakerSubsystem extends SubsystemBase {
 
         topShootMotor = new CANSparkMax(Constants.Shooter.Speaker.topShootID, MotorType.kBrushless);
         bottomShootMotor = new CANSparkMax(Constants.Shooter.Speaker.bottomShootID, MotorType.kBrushless);
-        bottomShootMotor.follow(topShootMotor, false);
+       //bottomShootMotor.follow(topShootMotor, false);
 
         pivotEncoder = new DutyCycleEncoder(Constants.Shooter.Speaker.pivotEncoderDIOPort);
         pivotEncoder.setPositionOffset(Constants.Shooter.Speaker.pivotEncoderOffset);
