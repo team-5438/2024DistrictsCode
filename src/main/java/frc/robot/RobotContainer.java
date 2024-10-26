@@ -129,7 +129,7 @@ public class RobotContainer {
         ));
 
         /* shoot note out of speaker shooter */
-        new JoystickButton(operator, PS4Controller.Button.kR2.value).whileTrue( new FeedCommand(speakerSubsystem, intakeSubsystem, 1));
+        new JoystickButton(operator, PS4Controller.Button.kR2.value).whileTrue(new FeedCommand(speakerSubsystem, intakeSubsystem, 1));
 
         /* rev up speaker shooter wheels manually */
         new JoystickButton(operator, PS4Controller.Button.kL2.value).whileTrue(new RevShooterWheelsCommand(speakerSubsystem, Constants.Shooter.Speaker.shootingSpeed));
@@ -154,6 +154,8 @@ public class RobotContainer {
         new JoystickButton(operator, PS4Controller.Button.kTouchpad.value).whileTrue(new ShootAmpCommand(speakerSubsystem));
 
         new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(new AutoAimSpeakerCommand(speakerSubsystem, photonSubsystem, ledSubsystem, swerveSubsystem, operator));
+
+        new JoystickButton(operator, PS4Controller.Button.kCircle.value).whileTrue(new SetSpeakerPositionCommand(speakerSubsystem, 0.1176));
     }
 
     private void namedCommands() {

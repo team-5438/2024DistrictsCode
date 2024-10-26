@@ -51,8 +51,10 @@ public class PhotonSubsystem extends SubsystemBase {
         NT = NetworkTableInstance.getDefault().getTable("photonvision");
         if (NT != null) {
             cam0 = new PhotonCamera(Constants.Vision.camera0);
+            System.out.println("WE HAVE A NETWORK TABLE!");
         } else {
             cam0 = null;
+            System.out.println("WAAAAAAAAAAAAAAAAAAAH");
         }
         isAligned = false;
 
@@ -67,7 +69,7 @@ public class PhotonSubsystem extends SubsystemBase {
         /* where is the camera places relative to the robot */
         // TODO: figure the coordinates that we need to put here
         robotToCam = new Transform3d(
-                new Translation3d(Units.inchesToMeters(-11), 0, 0),
+                new Translation3d(Units.inchesToMeters(-12), -2, 0),
                 new Rotation3d(0, Units.degreesToRadians(13), Units.degreesToRadians(180)));
 
         /* start estimating the pose of the robot */

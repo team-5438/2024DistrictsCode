@@ -3,6 +3,7 @@ package frc.robot;
 import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
+        PortForwarder.add(5800, "10.54.38.11", 5800);
         try {
             // CameraServer.startAutomaticCapture();
         } catch(Error e) {
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
         }
         m_robotContainer.ledSubsystem.setDefault();
 
+        
         // addPeriodic(() -> {
         //     m_robotContainer.speakerSubsystem.colorSensorProximity = m_robotContainer.speakerSubsystem.colorSensor.getProximity();
         // }, 0.05);
@@ -105,6 +108,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        //CommandScheduler.getInstance().cancelAll();
 
         /* make manual aiming default in teleop mode */
         m_robotContainer.speakerSubsystem.setDefaultCommand(m_robotContainer.manualAimSpeakerCommand);
