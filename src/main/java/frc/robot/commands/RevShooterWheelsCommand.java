@@ -16,6 +16,7 @@ public class RevShooterWheelsCommand extends Command {
     @Override
     public void initialize() {
         speakerSubsystem.topShootMotor.set(speed);
+        speakerSubsystem.bottomShootMotor.set(speed);
     }
 
     @Override
@@ -26,5 +27,6 @@ public class RevShooterWheelsCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         speakerSubsystem.topShootMotor.set(0);
+        speakerSubsystem.bottomShootMotor.set(0);
     }
 }

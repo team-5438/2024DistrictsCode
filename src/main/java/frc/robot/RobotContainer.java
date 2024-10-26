@@ -140,7 +140,8 @@ public class RobotContainer {
         ));
 
         /* shoot note out of amp shooter */
-        // new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, 1));
+        // ne
+        //new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, 1));
         // new JoystickButton(operator, PS4Controller.Button.kCircle.value).whileTrue(new AmpShootCommand(ampSubsystem, speakerSubsystem, -1));
 
         /* bring climbers up and down */
@@ -148,9 +149,11 @@ public class RobotContainer {
         new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.94));
 
         /* Source preset */
-        new JoystickButton(operator, PS4Controller.Button.kCross.value).whileTrue(new SetSpeakerPositionCommand(speakerSubsystem, 0.1176));
+        new JoystickButton(operator, PS4Controller.Button.kCross.value).whileTrue(new SetSpeakerPositionCommand(speakerSubsystem, 0.13));
 
         new JoystickButton(operator, PS4Controller.Button.kTouchpad.value).whileTrue(new ShootAmpCommand(speakerSubsystem));
+
+        new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(new AutoAimSpeakerCommand(speakerSubsystem, photonSubsystem, ledSubsystem, swerveSubsystem, operator));
     }
 
     private void namedCommands() {

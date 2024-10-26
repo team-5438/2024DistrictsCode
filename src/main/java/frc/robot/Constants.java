@@ -86,7 +86,7 @@ public final class Constants {
     }
 
     public static final class Vision {
-        public static final String camera0 = "Camera_Module_v1";
+        public static final String camera0 = "camera0";
         public static final double alignedTolerance = 7.5;
     }
 
